@@ -1,0 +1,503 @@
+### Test de l'API RéservPlus - Gestion des Utilisateurs
+
+### 1. Récupérer tous les utilisateurs
+GET https://localhost:7195/api/users
+Content-Type: application/json
+
+###
+
+### 2. Créer un nouvel utilisateur
+POST https://localhost:7195/api/users
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "nom": "Doe",
+  "prenom": "John",
+  "motDePasse": "password123"
+}
+
+###
+
+### 3. Créer un deuxième utilisateur
+POST https://localhost:7195/api/users
+Content-Type: application/json
+
+{
+  "email": "jane.smith@example.com",
+  "nom": "Smith",
+  "prenom": "Jane",
+  "motDePasse": "password456"
+}
+
+###
+
+### 4. Récupérer tous les utilisateurs (après création)
+GET https://localhost:7195/api/users
+Content-Type: application/json
+
+###
+
+### 5. Rechercher des utilisateurs par nom
+GET https://localhost:7195/api/users/search?term=Doe
+Content-Type: application/json
+
+###
+
+### 6. Vérifier si un email existe
+GET https://localhost:7195/api/users/check-email/john.doe@example.com
+Content-Type: application/json
+
+###
+
+### 7. Récupérer un utilisateur par ID (remplacez {id} par un vrai ID)
+GET https://localhost:7195/api/users/{id}
+Content-Type: application/json
+
+###
+
+### 8. Mettre à jour un utilisateur (remplacez {id} par un vrai ID)
+PUT https://localhost:7195/api/users/{id}
+Content-Type: application/json
+
+{
+  "id": "{id}",
+  "email": "john.doe.updated@example.com",
+  "nom": "Doe",
+  "prenom": "John Updated",
+  "motDePasse": "newpassword123"
+}
+
+###
+
+### 9. Supprimer un utilisateur (remplacez {id} par un vrai ID)
+DELETE https://localhost:7195/api/users/{id}
+Content-Type: application/json
+
+###
+
+### 10. Test de l'endpoint weatherforecast
+GET https://localhost:7195/weatherforecast
+Content-Type: application/json
+
+###
+
+### Test de l'API RéservPlus - Gestion des Paiements
+
+### 11. Récupérer tous les paiements
+GET https://localhost:7195/api/paiements
+Content-Type: application/json
+
+###
+
+### 12. Créer un nouveau paiement
+POST https://localhost:7195/api/paiements
+Content-Type: application/json
+
+{
+  "montant": 150.50,
+  "reservationId": "00000000-0000-0000-0000-000000000001",
+  "methode": 0
+}
+
+###
+
+### 13. Créer un deuxième paiement
+POST https://localhost:7195/api/paiements
+Content-Type: application/json
+
+{
+  "montant": 75.25,
+  "reservationId": "00000000-0000-0000-0000-000000000002",
+  "methode": 1
+}
+
+###
+
+### 14. Récupérer tous les paiements (après création)
+GET https://localhost:7195/api/paiements
+Content-Type: application/json
+
+###
+
+### 15. Récupérer les paiements par statut
+GET https://localhost:7195/api/paiements/statut/0
+Content-Type: application/json
+
+###
+
+### 16. Récupérer les paiements par réservation
+GET https://localhost:7195/api/paiements/reservation/00000000-0000-0000-0000-000000000001
+Content-Type: application/json
+
+###
+
+### 17. Récupérer les paiements par plage de dates
+GET https://localhost:7195/api/paiements/daterange?startDate=2024-01-01&endDate=2024-12-31
+Content-Type: application/json
+
+###
+
+### 18. Récupérer un paiement par ID (remplacez {id} par un vrai ID)
+GET https://localhost:7195/api/paiements/{id}
+Content-Type: application/json
+
+###
+
+### 19. Mettre à jour un paiement (remplacez {id} par un vrai ID)
+PUT https://localhost:7195/api/paiements/{id}
+Content-Type: application/json
+
+{
+  "montant": 160.00,
+  "statut": 1,
+  "methode": 2
+}
+
+###
+
+### 20. Valider un paiement (remplacez {id} par un vrai ID)
+POST https://localhost:7195/api/paiements/{id}/valider
+Content-Type: application/json
+
+###
+
+### 21. Refuser un paiement (remplacez {id} par un vrai ID)
+POST https://localhost:7195/api/paiements/{id}/refuser
+Content-Type: application/json
+
+###
+
+### 22. Rembourser un paiement (remplacez {id} par un vrai ID)
+POST https://localhost:7195/api/paiements/{id}/rembourser
+Content-Type: application/json
+
+###
+
+### 23. Supprimer un paiement (remplacez {id} par un vrai ID)
+DELETE https://localhost:7195/api/paiements/{id}
+Content-Type: application/json
+
+###
+
+### Test de l'API RéservPlus - Gestion des Disponibilités
+
+### 24. Récupérer toutes les disponibilités
+GET https://localhost:7195/api/disponibilites
+Content-Type: application/json
+
+###
+
+### 25. Créer une nouvelle disponibilité
+POST https://localhost:7195/api/disponibilites
+Content-Type: application/json
+
+{
+  "date": "2024-12-25T00:00:00",
+  "heureDebut": "09:00:00",
+  "heureFin": "12:00:00",
+  "estDisponible": true,
+  "serviceId": "00000000-0000-0000-0000-000000000001"
+}
+
+###
+
+### 26. Créer une deuxième disponibilité
+POST https://localhost:7195/api/disponibilites
+Content-Type: application/json
+
+{
+  "date": "2024-12-25T00:00:00",
+  "heureDebut": "14:00:00",
+  "heureFin": "17:00:00",
+  "estDisponible": true,
+  "serviceId": "00000000-0000-0000-0000-000000000001"
+}
+
+###
+
+### 27. Récupérer toutes les disponibilités (après création)
+GET https://localhost:7195/api/disponibilites
+Content-Type: application/json
+
+###
+
+### 28. Récupérer les disponibilités par service
+GET https://localhost:7195/api/disponibilites/service/00000000-0000-0000-0000-000000000001
+Content-Type: application/json
+
+###
+
+### 29. Récupérer les disponibilités par date
+GET https://localhost:7195/api/disponibilites/date/2024-12-25T00:00:00
+Content-Type: application/json
+
+###
+
+### 30. Récupérer les disponibilités par plage de dates
+GET https://localhost:7195/api/disponibilites/daterange?startDate=2024-12-01&endDate=2024-12-31
+Content-Type: application/json
+
+###
+
+### 31. Récupérer les disponibilités disponibles par service
+GET https://localhost:7195/api/disponibilites/available/service/00000000-0000-0000-0000-000000000001
+Content-Type: application/json
+
+###
+
+### 32. Récupérer les disponibilités disponibles par plage de dates
+GET https://localhost:7195/api/disponibilites/available/daterange?serviceId=00000000-0000-0000-0000-000000000001&startDate=2024-12-01&endDate=2024-12-31
+Content-Type: application/json
+
+###
+
+### 33. Vérifier la disponibilité d'un créneau
+GET https://localhost:7195/api/disponibilites/check-availability?serviceId=00000000-0000-0000-0000-000000000001&date=2024-12-25T00:00:00&heureDebut=10:00:00&heureFin=11:00:00
+Content-Type: application/json
+
+###
+
+### 34. Rechercher des disponibilités
+POST https://localhost:7195/api/disponibilites/search
+Content-Type: application/json
+
+{
+  "serviceId": "00000000-0000-0000-0000-000000000001",
+  "startDate": "2024-12-01T00:00:00",
+  "endDate": "2024-12-31T00:00:00",
+  "estDisponible": true
+}
+
+###
+
+### 35. Récupérer une disponibilité par ID (remplacez {id} par un vrai ID)
+GET https://localhost:7195/api/disponibilites/{id}
+Content-Type: application/json
+
+###
+
+### 36. Mettre à jour une disponibilité (remplacez {id} par un vrai ID)
+PUT https://localhost:7195/api/disponibilites/{id}
+Content-Type: application/json
+
+{
+  "date": "2024-12-25T00:00:00",
+  "heureDebut": "09:30:00",
+  "heureFin": "12:30:00",
+  "estDisponible": false
+}
+
+###
+
+### 37. Marquer une disponibilité comme indisponible (remplacez {id} par un vrai ID)
+POST https://localhost:7195/api/disponibilites/{id}/mark-unavailable
+Content-Type: application/json
+
+###
+
+### 38. Marquer une disponibilité comme disponible (remplacez {id} par un vrai ID)
+POST https://localhost:7195/api/disponibilites/{id}/mark-available
+Content-Type: application/json
+
+###
+
+### 39. Supprimer une disponibilité (remplacez {id} par un vrai ID)
+DELETE https://localhost:7195/api/disponibilites/{id}
+Content-Type: application/json
+
+###
+
+### Test de l'API RéservPlus - Authentification JWT
+
+### 40. Inscription d'un nouvel utilisateur
+POST https://localhost:7195/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "nom": "Doe",
+  "prenom": "John",
+  "motDePasse": "password123",
+  "confirmerMotDePasse": "password123"
+}
+
+###
+
+### 41. Connexion utilisateur
+POST https://localhost:7195/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "motDePasse": "password123"
+}
+
+###
+
+### 42. Inscription d'un deuxième utilisateur
+POST https://localhost:7195/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "jane.smith@example.com",
+  "nom": "Smith",
+  "prenom": "Jane",
+  "motDePasse": "password456",
+  "confirmerMotDePasse": "password456"
+}
+
+###
+
+### 43. Connexion du deuxième utilisateur
+POST https://localhost:7195/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "jane.smith@example.com",
+  "motDePasse": "password456"
+}
+
+###
+
+### 44. Rafraîchir le token (remplacez {refreshToken} par un vrai refresh token)
+POST https://localhost:7195/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{refreshToken}"
+}
+
+###
+
+### 45. Valider un token (remplacez {token} par un vrai JWT token)
+GET https://localhost:7195/api/auth/validate
+Authorization: Bearer {token}
+
+###
+
+### 46. Obtenir le profil utilisateur (remplacez {token} par un vrai JWT token)
+GET https://localhost:7195/api/auth/profile
+Authorization: Bearer {token}
+
+###
+
+### 47. Changer le mot de passe (remplacez {token} par un vrai JWT token)
+POST https://localhost:7195/api/auth/change-password
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "ancienMotDePasse": "password123",
+  "nouveauMotDePasse": "newpassword123",
+  "confirmerNouveauMotDePasse": "newpassword123"
+}
+
+###
+
+### 48. Déconnexion (remplacez {refreshToken} par un vrai refresh token)
+POST https://localhost:7195/api/auth/logout
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "refreshToken": "{refreshToken}"
+}
+
+###
+
+### Test des endpoints sécurisés avec JWT
+
+### 49. Récupérer tous les utilisateurs (authentifié)
+GET https://localhost:7195/api/users
+Authorization: Bearer {token}
+
+###
+
+### 50. Récupérer tous les services (authentifié)
+GET https://localhost:7195/api/services
+Authorization: Bearer {token}
+
+###
+
+### 51. Récupérer tous les prestataires (authentifié)
+GET https://localhost:7195/api/prestataires
+Authorization: Bearer {token}
+
+###
+
+### 52. Récupérer toutes les réservations (authentifié)
+GET https://localhost:7195/api/reservations
+Authorization: Bearer {token}
+
+###
+
+### 53. Récupérer tous les paiements (authentifié)
+GET https://localhost:7195/api/paiements
+Authorization: Bearer {token}
+
+###
+
+### 54. Récupérer toutes les disponibilités (authentifié)
+GET https://localhost:7195/api/disponibilites
+Authorization: Bearer {token}
+
+###
+
+### Test de l'API RéservPlus - Authentification Externe (Google/Facebook)
+
+### 55. Authentification avec Google
+POST https://localhost:7195/api/auth/google
+Content-Type: application/json
+
+{
+  "provider": "Google",
+  "accessToken": "VOTRE_GOOGLE_ACCESS_TOKEN"
+}
+
+###
+
+### 56. Authentification avec Facebook
+POST https://localhost:7195/api/auth/facebook
+Content-Type: application/json
+
+{
+  "provider": "Facebook",
+  "accessToken": "VOTRE_FACEBOOK_ACCESS_TOKEN"
+}
+
+###
+
+### 57. Récupérer les informations utilisateur Google
+GET https://localhost:7195/api/auth/google/userinfo?accessToken=VOTRE_GOOGLE_ACCESS_TOKEN
+Content-Type: application/json
+
+###
+
+### 58. Récupérer les informations utilisateur Facebook
+GET https://localhost:7195/api/auth/facebook/userinfo?accessToken=VOTRE_FACEBOOK_ACCESS_TOKEN
+Content-Type: application/json
+
+###
+
+### 59. Test avec un token Google valide (remplacez par un vrai token)
+POST https://localhost:7195/api/auth/google
+Content-Type: application/json
+
+{
+  "provider": "Google",
+  "accessToken": "ya29.a0AfB_byC..."
+}
+
+###
+
+### 60. Test avec un token Facebook valide (remplacez par un vrai token)
+POST https://localhost:7195/api/auth/facebook
+Content-Type: application/json
+
+{
+  "provider": "Facebook",
+  "accessToken": "EAABwzLixnjYBO..."
+}
+
+###

@@ -1,0 +1,92 @@
+<div class="user-list-container">
+  <div class="header">
+    <h2>Liste des Utilisateurs</h2>
+    <div class="header-actions">
+      <button class="btn btn-success" (click)="showAddForm()">
+        <i class="fas fa-plus"></i> Ajouter un utilisateur
+      </button>
+      <button class="btn btn-primary" (click)="loadUsers()">
+        <i class="fas fa-sync-alt"></i> Actualiser
+      </button>
+    </div>
+  </div>
+
+  <!-- Messages de succès et d'erreur -->
+  <div *ngIf="successMessage" class="success-message">
+    <p>{{ successMessage }}</p>
+  </div>
+  
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <p>Chargement des utilisateurs...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+    <button (click)="loadUsers()">Réessayer</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error">
+    <div *ngIf="users.length === 0" class="no-data">
+      <p>Aucun utilisateur trouvé.</p>
+    </div>
+
+    <div *ngIf="users.length > 0" class="users-grid">
+      <div *ngFor="let user of users" class="user-card">
+        <div class="card-header">
+          <h3>{{ user.prenom }} {{ user.nom }}</h3>
+          <span class="status" [ngClass]="user.estActif ? 'status-active' : 'status-inactive'">
+            {{ user.estActif ? 'Actif' : 'Inactif' }}
+          </span>
+        </div>
+        <div class="card-body">
+          <div class="info-row">
+            <i class="fas fa-envelope"></i>
+            <span>{{ user.email }}</span>
+          </div>
+          <div class="info-row">
+            <i class="fas fa-phone"></i>
+            <span>{{ user.telephone }}</span>
+          </div>
+          <div class="info-row">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ user.ville }}, {{ user.codePostal }}</span>
+          </div>
+          <div class="info-row">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Inscrit le {{ user.dateInscription | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-primary btn-sm">
+            <i class="fas fa-eye"></i> Voir détails
+          </button>
+          <button class="btn btn-warning btn-sm" (click)="showEditForm(user)">
+            <i class="fas fa-edit"></i> Modifier
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulaire d'ajout/modification -->
+  <div *ngIf="showForm" class="form-overlay">
+    <div class="form-container">
+      <div class="form-header">
+        <h3>{{ formMode === 'create' ? 'Ajouter un utilisateur' : 'Modifier l\'utilisateur' }}</h3>
+        <button class="btn-close" (click)="hideForm()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <app-user-form
+        [user]="editingUser || undefined"
+        [mode]="formMode"
+        (formSubmit)="onFormSubmit($event)"
+        (cancel)="onFormCancel()"
+      ></app-user-form>
+    </div>
+  </div>
+</div> 

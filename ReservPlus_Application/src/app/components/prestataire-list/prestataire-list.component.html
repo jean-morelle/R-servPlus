@@ -1,0 +1,152 @@
+<div class="prestataire-list-container">
+  <div class="header">
+    <h2>Liste des Prestataires</h2>
+    <div class="header-actions">
+      <button class="btn btn-success" (click)="showAddForm()">
+        <i class="fas fa-plus"></i> Ajouter un prestataire
+      </button>
+      <button class="btn btn-primary" (click)="loadPrestataires()">
+        <i class="fas fa-sync-alt"></i> Actualiser
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters">
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearchChange()"
+        placeholder="Rechercher par nom, spécialité ou ville..."
+        class="form-control"
+      >
+    </div>
+    
+    <div class="filter-group">
+      <select 
+        [(ngModel)]="selectedSpecialite" 
+        (change)="onSpecialiteChange()"
+        class="form-control"
+      >
+        <option value="">Toutes les spécialités</option>
+        <option *ngFor="let specialite of specialites" [value]="specialite">
+          {{ specialite }}
+        </option>
+      </select>
+    </div>
+
+    <button class="btn btn-secondary" (click)="clearFilters()">
+      Effacer les filtres
+    </button>
+  </div>
+
+  <!-- État de chargement -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Chargement des prestataires...</p>
+  </div>
+
+  <!-- Messages de succès et d'erreur -->
+  <div *ngIf="successMessage" class="success-message">
+    <p>{{ successMessage }}</p>
+  </div>
+  
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Liste des prestataires -->
+  <div *ngIf="!loading && !error" class="prestataires-grid">
+    <div *ngIf="filteredPrestataires.length === 0" class="no-results">
+      <p>Aucun prestataire trouvé.</p>
+    </div>
+
+    <div 
+      *ngFor="let prestataire of filteredPrestataires" 
+      class="prestataire-card"
+    >
+      <div class="card-header">
+        <h3>{{ prestataire.prenom }} {{ prestataire.nom }}</h3>
+        <span class="status" [ngClass]="getStatusClass(prestataire.estActif)">
+          {{ getStatusText(prestataire.estActif) }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <div class="info-row">
+          <i class="fas fa-tools"></i>
+          <span class="specialite">{{ prestataire.specialite }}</span>
+        </div>
+
+        <div class="info-row">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>{{ prestataire.ville }}, {{ prestataire.codePostal }}</span>
+        </div>
+
+        <div class="info-row">
+          <i class="fas fa-envelope"></i>
+          <span>{{ prestataire.email }}</span>
+        </div>
+
+        <div class="info-row">
+          <i class="fas fa-phone"></i>
+          <span>{{ prestataire.telephone }}</span>
+        </div>
+
+        <div class="info-row">
+          <i class="fas fa-euro-sign"></i>
+          <span class="price">{{ formatPrice(prestataire.tarifHoraire) }}</span>
+        </div>
+
+        <div class="description">
+          <p>{{ prestataire.description }}</p>
+        </div>
+
+        <div class="info-row">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Inscrit le {{ formatDate(prestataire.dateInscription) }}</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn btn-primary btn-sm">
+          <i class="fas fa-eye"></i> Voir détails
+        </button>
+        <button class="btn btn-warning btn-sm" (click)="showEditForm(prestataire)">
+          <i class="fas fa-edit"></i> Modifier
+        </button>
+        <button class="btn btn-success btn-sm">
+          <i class="fas fa-calendar-plus"></i> Réserver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistiques -->
+  <div *ngIf="!loading && !error && filteredPrestataires.length > 0" class="stats">
+    <p>{{ filteredPrestataires.length }} prestataire(s) trouvé(s)</p>
+  </div>
+
+  <!-- Formulaire d'ajout/modification -->
+  <div *ngIf="showForm" class="form-overlay">
+    <div class="form-container">
+      <div class="form-header">
+        <h3>{{ formMode === 'create' ? 'Ajouter un prestataire' : 'Modifier le prestataire' }}</h3>
+        <button class="btn-close" (click)="hideForm()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <app-prestataire-form
+        [prestataire]="editingPrestataire || undefined"
+        [mode]="formMode"
+        (formSubmit)="onFormSubmit($event)"
+        (cancel)="onFormCancel()"
+      ></app-prestataire-form>
+    </div>
+  </div>
+</div> 

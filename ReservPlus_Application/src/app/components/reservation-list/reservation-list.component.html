@@ -1,0 +1,115 @@
+<div class="container">
+  <div class="header">
+    <h2>Gestion des Réservations</h2>
+    <button class="btn btn-primary" (click)="addReservation()">
+      <i class="fas fa-plus"></i>
+      Nouvelle réservation
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des réservations...</p>
+  </div>
+
+  <div *ngIf="!loading && reservations.length === 0" class="empty-state">
+    <i class="fas fa-calendar-check"></i>
+    <h3>Aucune réservation trouvée</h3>
+    <p>Commencez par créer une nouvelle réservation.</p>
+    <button class="btn btn-primary" (click)="addReservation()">
+      Nouvelle réservation
+    </button>
+  </div>
+
+  <div *ngIf="!loading && reservations.length > 0" class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Utilisateur</th>
+          <th>Prestataire</th>
+          <th>Date</th>
+          <th>Heures</th>
+          <th>Montant</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of reservations" class="table-row">
+          <td>{{ reservation.id }}</td>
+          <td>{{ getUserName(reservation.userId) }}</td>
+          <td>{{ getPrestataireName(reservation.prestataireId) }}</td>
+          <td>{{ formatDate(reservation.dateReservation) }}</td>
+          <td>{{ formatTime(reservation.heureDebut) }} - {{ formatTime(reservation.heureFin) }}</td>
+          <td class="amount">{{ formatAmount(reservation.montant) }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(reservation.statut)">
+              {{ getStatusText(reservation.statut) }}
+            </span>
+          </td>
+          <td class="actions">
+            <button 
+              *ngIf="canConfirm(reservation)"
+              class="btn btn-sm btn-success" 
+              (click)="confirmReservation(reservation.id)"
+              title="Confirmer">
+              <i class="fas fa-check"></i>
+            </button>
+            <button 
+              *ngIf="canComplete(reservation)"
+              class="btn btn-sm btn-info" 
+              (click)="completeReservation(reservation.id)"
+              title="Terminer">
+              <i class="fas fa-flag-checkered"></i>
+            </button>
+            <button 
+              *ngIf="canEdit(reservation)"
+              class="btn btn-sm btn-outline-primary" 
+              (click)="editReservation(reservation)"
+              title="Modifier">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button 
+              *ngIf="canCancel(reservation)"
+              class="btn btn-sm btn-outline-warning" 
+              (click)="cancelReservation(reservation.id)"
+              title="Annuler">
+              <i class="fas fa-times"></i>
+            </button>
+            <button 
+              class="btn btn-sm btn-outline-danger" 
+              (click)="deleteReservation(reservation.id)"
+              title="Supprimer">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal pour le formulaire -->
+<div *ngIf="showForm" class="modal-overlay" (click)="onFormCancelled()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? 'Modifier' : 'Créer' }} une réservation</h3>
+      <button class="modal-close" (click)="onFormCancelled()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-reservation-form
+        [reservation]="selectedReservation"
+        [isEditMode]="isEditMode"
+        (saved)="onReservationSaved($event)"
+        (cancelled)="onFormCancelled()">
+      </app-reservation-form>
+    </div>
+  </div>
+</div> 

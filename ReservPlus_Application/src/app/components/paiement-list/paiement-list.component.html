@@ -1,0 +1,93 @@
+<div class="container">
+  <div class="header">
+    <h2>Gestion des Paiements</h2>
+    <button class="btn btn-primary" (click)="addPaiement()">
+      <i class="fas fa-plus"></i>
+      Ajouter un paiement
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des paiements...</p>
+  </div>
+
+  <div *ngIf="!loading && paiements.length === 0" class="empty-state">
+    <i class="fas fa-credit-card"></i>
+    <h3>Aucun paiement trouvé</h3>
+    <p>Commencez par ajouter un paiement.</p>
+    <button class="btn btn-primary" (click)="addPaiement()">
+      Ajouter un paiement
+    </button>
+  </div>
+
+  <div *ngIf="!loading && paiements.length > 0" class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Utilisateur</th>
+          <th>Prestataire</th>
+          <th>Montant</th>
+          <th>Date</th>
+          <th>Méthode</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let paiement of paiements" class="table-row">
+          <td>{{ paiement.id }}</td>
+          <td>{{ getUserName(paiement.userId) }}</td>
+          <td>{{ getPrestataireName(paiement.prestataireId) }}</td>
+          <td class="amount">{{ formatAmount(paiement.montant) }}</td>
+          <td>{{ formatDate(paiement.datePaiement) }}</td>
+          <td>{{ paiement.methodePaiement }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(paiement.statut)">
+              {{ getStatusText(paiement.statut) }}
+            </span>
+          </td>
+          <td class="actions">
+            <button 
+              class="btn btn-sm btn-outline-primary" 
+              (click)="editPaiement(paiement)"
+              title="Modifier">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button 
+              class="btn btn-sm btn-outline-danger" 
+              (click)="deletePaiement(paiement.id)"
+              title="Supprimer">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal pour le formulaire -->
+<div *ngIf="showForm" class="modal-overlay" (click)="onFormCancelled()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un paiement</h3>
+      <button class="modal-close" (click)="onFormCancelled()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-paiement-form
+        [paiement]="selectedPaiement"
+        [isEditMode]="isEditMode"
+        (saved)="onPaiementSaved($event)"
+        (cancelled)="onFormCancelled()">
+      </app-paiement-form>
+    </div>
+  </div>
+</div> 

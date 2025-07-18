@@ -1,0 +1,91 @@
+### Variables d'environnement
+@baseUrl = https://localhost:7001
+@contentType = application/json
+
+### 1. Créer une nouvelle réservation
+POST {{baseUrl}}/api/reservations
+Content-Type: {{contentType}}
+
+{
+  "userId": "00000000-0000-0000-0000-000000000001",
+  "serviceId": "00000000-0000-0000-0000-000000000001",
+  "dateReservation": "2024-12-25T00:00:00",
+  "heureDebut": "14:00:00",
+  "heureFin": "16:00:00",
+  "montantTotal": 150.00,
+  "notes": "Réservation pour un massage relaxant"
+}
+
+### 2. Créer une autre réservation
+POST {{baseUrl}}/api/reservations
+Content-Type: {{contentType}}
+
+{
+  "userId": "00000000-0000-0000-0000-000000000002",
+  "serviceId": "00000000-0000-0000-0000-000000000002",
+  "dateReservation": "2024-12-26T00:00:00",
+  "heureDebut": "10:00:00",
+  "heureFin": "11:30:00",
+  "montantTotal": 80.00,
+  "notes": "Séance de yoga matinale"
+}
+
+### 3. Récupérer toutes les réservations
+GET {{baseUrl}}/api/reservations
+
+### 4. Récupérer une réservation par ID (remplacer {id} par l'ID réel)
+GET {{baseUrl}}/api/reservations/{id}
+
+### 5. Récupérer les réservations d'un utilisateur
+GET {{baseUrl}}/api/reservations/user/00000000-0000-0000-0000-000000000001
+
+### 6. Récupérer les réservations d'un service
+GET {{baseUrl}}/api/reservations/service/00000000-0000-0000-0000-000000000001
+
+### 7. Récupérer les réservations par date
+GET {{baseUrl}}/api/reservations/date/2024-12-25T00:00:00
+
+### 8. Récupérer les réservations par statut
+GET {{baseUrl}}/api/reservations/statut/EnAttente
+
+### 9. Récupérer les réservations par plage de dates
+GET {{baseUrl}}/api/reservations/daterange?dateDebut=2024-12-25T00:00:00&dateFin=2024-12-31T00:00:00
+
+### 10. Vérifier la disponibilité d'un créneau
+GET {{baseUrl}}/api/reservations/disponibilite?serviceId=00000000-0000-0000-0000-000000000001&date=2024-12-25T00:00:00&heureDebut=14:00:00&heureFin=16:00:00
+
+### 11. Mettre à jour une réservation (remplacer {id} par l'ID réel)
+PUT {{baseUrl}}/api/reservations/{id}
+Content-Type: {{contentType}}
+
+{
+  "dateReservation": "2024-12-27T00:00:00",
+  "heureDebut": "15:00:00",
+  "heureFin": "17:00:00",
+  "statut": "Confirmee",
+  "montantTotal": 160.00,
+  "notes": "Réservation modifiée - horaire ajusté"
+}
+
+### 12. Mettre à jour le statut d'une réservation (remplacer {id} par l'ID réel)
+PATCH {{baseUrl}}/api/reservations/{id}/statut
+Content-Type: {{contentType}}
+
+"Confirmee"
+
+### 13. Supprimer une réservation (remplacer {id} par l'ID réel)
+DELETE {{baseUrl}}/api/reservations/{id}
+
+### 14. Test avec des données invalides
+POST {{baseUrl}}/api/reservations
+Content-Type: {{contentType}}
+
+{
+  "userId": "00000000-0000-0000-0000-000000000001",
+  "serviceId": "00000000-0000-0000-0000-000000000001",
+  "dateReservation": "2024-12-25T00:00:00",
+  "heureDebut": "14:00:00",
+  "heureFin": "16:00:00",
+  "montantTotal": -50.00,
+  "notes": "Montant négatif invalide"
+} 

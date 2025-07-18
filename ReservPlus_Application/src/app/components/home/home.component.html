@@ -1,0 +1,264 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-background">
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <div class="container">
+      <div class="hero-text">
+        <h1 class="hero-title">{{ getWelcomeMessage() }}</h1>
+        <p class="hero-subtitle">{{ getSubtitle() }}</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" (click)="onGetStarted()">
+            <i class="fas fa-rocket"></i>
+            {{ isAuthenticated ? 'Accéder au Dashboard' : 'Commencer maintenant' }}
+          </button>
+          <button class="btn btn-outline-light btn-lg" (click)="onLearnMore()">
+            <i class="fas fa-info-circle"></i>
+            En savoir plus
+          </button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-illustration">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div *ngFor="let stat of stats" class="stat-item">
+        <div class="stat-number">{{ stat.number }}</div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Fonctionnalités Principales</h2>
+      <p>Découvrez tous les outils dont vous avez besoin pour gérer efficacement vos réservations</p>
+    </div>
+    
+    <div class="features-grid">
+      <div 
+        *ngFor="let feature of features" 
+        class="feature-card"
+        (click)="onFeatureClick(feature)">
+        <div class="feature-icon" [style.background-color]="feature.color">
+          <i [class]="feature.icon"></i>
+        </div>
+        <div class="feature-content">
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+        <div class="feature-arrow">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works Section -->
+<section class="how-it-works-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Comment ça marche ?</h2>
+      <p>En 3 étapes simples, gérez vos réservations comme un professionnel</p>
+    </div>
+    
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Configurez votre équipe</h3>
+          <p>Ajoutez vos prestataires et définissez leurs spécialisations et disponibilités</p>
+        </div>
+      </div>
+      
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Gérez les réservations</h3>
+          <p>Créez et suivez les réservations avec un calendrier interactif et des notifications</p>
+        </div>
+      </div>
+      
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Analysez vos performances</h3>
+          <p>Consultez des rapports détaillés pour optimiser votre activité</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Témoignages Clients</h2>
+      <p>Découvrez ce que nos utilisateurs disent de RéservPlus</p>
+    </div>
+    
+    <div class="testimonials-grid">
+      <div *ngFor="let testimonial of testimonials" class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="testimonial-avatar">{{ testimonial.avatar }}</div>
+          <p class="testimonial-text">"{{ testimonial.content }}"</p>
+          <div class="testimonial-author">
+            <h4>{{ testimonial.name }}</h4>
+            <span>{{ testimonial.role }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Prêt à optimiser votre gestion de réservations ?</h2>
+      <p>Rejoignez des centaines de professionnels qui font confiance à RéservPlus</p>
+      <div class="cta-actions">
+        <button class="btn btn-primary btn-lg" (click)="onGetStarted()">
+          <i class="fas fa-play"></i>
+          {{ isAuthenticated ? 'Accéder à mon compte' : 'Commencer gratuitement' }}
+        </button>
+        <button class="btn btn-outline-primary btn-lg" (click)="onContact()">
+          <i class="fas fa-envelope"></i>
+          Nous contacter
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <div class="contact-content">
+      <div class="contact-info">
+        <h2>Contactez-nous</h2>
+        <p>Une question ? Un projet ? Nous sommes là pour vous aider !</p>
+        
+        <div class="contact-methods">
+          <div class="contact-method">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <h4>Email</h4>
+              <p>contact&#64;reservplus.fr</p>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <i class="fas fa-phone"></i>
+            <div>
+              <h4>Téléphone</h4>
+              <p>+33 1 23 45 67 89</p>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <h4>Adresse</h4>
+              <p>123 Rue de la Technologie<br>75001 Paris, France</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-form">
+        <form>
+          <div class="form-group">
+            <input type="text" placeholder="Votre nom" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Votre email" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Sujet" class="form-control">
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Votre message" rows="5" class="form-control"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i>
+            Envoyer le message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>RéservPlus</h3>
+        <p>La solution complète pour gérer vos réservations et optimiser votre planning professionnel.</p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Produit</h4>
+        <ul>
+          <li><a href="#features">Fonctionnalités</a></li>
+          <li><a href="#">Tarifs</a></li>
+          <li><a href="#">Intégrations</a></li>
+          <li><a href="#">API</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Centre d'aide</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Statut</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Entreprise</h4>
+        <ul>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Carrières</a></li>
+          <li><a href="#">Presse</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2024 RéservPlus. Tous droits réservés.</p>
+      <div class="footer-links">
+        <a href="#">Mentions légales</a>
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">Conditions d'utilisation</a>
+      </div>
+    </div>
+  </div>
+</footer> 

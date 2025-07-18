@@ -1,0 +1,96 @@
+<div class="notifications-container">
+  <div class="notifications-trigger" (click)="toggleDropdown()">
+    <i class="fas fa-bell"></i>
+    <span *ngIf="unreadCount > 0" class="notification-badge">{{ unreadCount }}</span>
+  </div>
+
+  <div *ngIf="showDropdown" class="notifications-dropdown" (click)="$event.stopPropagation()">
+    <div class="notifications-header">
+      <h3>Notifications</h3>
+      <div class="header-actions">
+        <button 
+          *ngIf="unreadCount > 0"
+          class="btn btn-sm btn-outline-primary" 
+          (click)="markAllAsRead()"
+          [disabled]="loading">
+          <span *ngIf="loading" class="spinner"></span>
+          Tout marquer comme lu
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" (click)="closeDropdown()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div class="notifications-content">
+      <div *ngIf="notifications.length === 0" class="empty-notifications">
+        <i class="fas fa-bell-slash"></i>
+        <p>Aucune notification</p>
+      </div>
+
+      <div *ngIf="notifications.length > 0" class="notifications-list">
+        <!-- Notifications non lues -->
+        <div *ngIf="getUnreadNotifications().length > 0" class="notifications-section">
+          <h4 class="section-title">Non lues</h4>
+          <div 
+            *ngFor="let notification of getUnreadNotifications()" 
+            class="notification-item unread"
+            [ngClass]="getNotificationClass(notification.type)"
+            (click)="markAsRead(notification)">
+            <div class="notification-icon">
+              <i [class]="getNotificationIcon(notification.type)"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-header">
+                <h5 class="notification-title">{{ notification.titre }}</h5>
+                <span class="notification-time">{{ formatDate(notification.dateCreation) }}</span>
+              </div>
+              <p class="notification-message">{{ notification.message }}</p>
+            </div>
+            <div class="notification-actions">
+              <button 
+                class="btn btn-sm btn-outline-danger"
+                (click)="deleteNotification(notification, $event)"
+                title="Supprimer">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications lues -->
+        <div *ngIf="getReadNotifications().length > 0" class="notifications-section">
+          <h4 class="section-title">Lues</h4>
+          <div 
+            *ngFor="let notification of getReadNotifications()" 
+            class="notification-item read"
+            [ngClass]="getNotificationClass(notification.type)"
+            (click)="markAsRead(notification)">
+            <div class="notification-icon">
+              <i [class]="getNotificationIcon(notification.type)"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-header">
+                <h5 class="notification-title">{{ notification.titre }}</h5>
+                <span class="notification-time">{{ formatDate(notification.dateCreation) }}</span>
+              </div>
+              <p class="notification-message">{{ notification.message }}</p>
+            </div>
+            <div class="notification-actions">
+              <button 
+                class="btn btn-sm btn-outline-danger"
+                (click)="deleteNotification(notification, $event)"
+                title="Supprimer">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

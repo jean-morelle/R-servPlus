@@ -1,0 +1,97 @@
+<div class="form-container">
+  <div class="form-header">
+    <h3>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une disponibilité</h3>
+  </div>
+
+  <form [formGroup]="disponibiliteForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label for="prestataireId">Prestataire *</label>
+      <select 
+        id="prestataireId" 
+        formControlName="prestataireId"
+        class="form-control"
+        [class.is-invalid]="disponibiliteForm.get('prestataireId')?.invalid && disponibiliteForm.get('prestataireId')?.touched">
+        <option value="">Sélectionner un prestataire</option>
+        <option *ngFor="let prestataire of prestataires" [value]="prestataire.id">
+          {{ prestataire.nom }} {{ prestataire.prenom }}
+        </option>
+      </select>
+      <div *ngIf="disponibiliteForm.get('prestataireId')?.invalid && disponibiliteForm.get('prestataireId')?.touched" class="error-message">
+        {{ getErrorMessage('prestataireId') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="date">Date *</label>
+      <input 
+        type="date" 
+        id="date" 
+        formControlName="date"
+        class="form-control"
+        [class.is-invalid]="disponibiliteForm.get('date')?.invalid && disponibiliteForm.get('date')?.touched">
+      <div *ngIf="disponibiliteForm.get('date')?.invalid && disponibiliteForm.get('date')?.touched" class="error-message">
+        {{ getErrorMessage('date') }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="heureDebut">Heure de début *</label>
+        <input 
+          type="time" 
+          id="heureDebut" 
+          formControlName="heureDebut"
+          class="form-control"
+          [class.is-invalid]="disponibiliteForm.get('heureDebut')?.invalid && disponibiliteForm.get('heureDebut')?.touched">
+        <div *ngIf="disponibiliteForm.get('heureDebut')?.invalid && disponibiliteForm.get('heureDebut')?.touched" class="error-message">
+          {{ getErrorMessage('heureDebut') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="heureFin">Heure de fin *</label>
+        <input 
+          type="time" 
+          id="heureFin" 
+          formControlName="heureFin"
+          class="form-control"
+          [class.is-invalid]="disponibiliteForm.get('heureFin')?.invalid && disponibiliteForm.get('heureFin')?.touched">
+        <div *ngIf="disponibiliteForm.get('heureFin')?.invalid && disponibiliteForm.get('heureFin')?.touched" class="error-message">
+          {{ getErrorMessage('heureFin') }}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="checkbox-label">
+        <input 
+          type="checkbox" 
+          formControlName="disponible"
+          class="form-checkbox">
+        <span class="checkmark"></span>
+        Disponible
+      </label>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="disponibiliteForm.invalid || loading">
+        <span *ngIf="loading" class="spinner"></span>
+        {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-secondary"
+        (click)="onCancel()"
+        [disabled]="loading">
+        Annuler
+      </button>
+    </div>
+  </form>
+</div> 

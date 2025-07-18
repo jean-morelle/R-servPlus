@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="header">
+    <h2>Gestion des Disponibilités</h2>
+    <button class="btn btn-primary" (click)="addDisponibilite()">
+      <i class="fas fa-plus"></i>
+      Ajouter une disponibilité
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des disponibilités...</p>
+  </div>
+
+  <div *ngIf="!loading && disponibilites.length === 0" class="empty-state">
+    <i class="fas fa-calendar-times"></i>
+    <h3>Aucune disponibilité trouvée</h3>
+    <p>Commencez par ajouter une disponibilité pour un prestataire.</p>
+    <button class="btn btn-primary" (click)="addDisponibilite()">
+      Ajouter une disponibilité
+    </button>
+  </div>
+
+  <div *ngIf="!loading && disponibilites.length > 0" class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Prestataire</th>
+          <th>Date</th>
+          <th>Heure début</th>
+          <th>Heure fin</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let disponibilite of disponibilites" class="table-row">
+          <td>{{ getPrestataireName(disponibilite.prestataireId) }}</td>
+          <td>{{ formatDate(disponibilite.date) }}</td>
+          <td>{{ formatTime(disponibilite.heureDebut) }}</td>
+          <td>{{ formatTime(disponibilite.heureFin) }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(disponibilite.estDisponible)">
+              {{ getStatusText(disponibilite.estDisponible) }}
+            </span>
+          </td>
+          <td class="actions">
+            <button 
+              class="btn btn-sm btn-outline-primary" 
+              (click)="editDisponibilite(disponibilite)"
+              title="Modifier">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button 
+              class="btn btn-sm btn-outline-danger" 
+              (click)="deleteDisponibilite(disponibilite.id)"
+              title="Supprimer">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal pour le formulaire -->
+<div *ngIf="showForm" class="modal-overlay" (click)="onFormCancelled()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une disponibilité</h3>
+      <button class="modal-close" (click)="onFormCancelled()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-disponibilite-form
+        [disponibilite]="selectedDisponibilite"
+        [isEditMode]="isEditMode"
+        (saved)="onDisponibiliteSaved($event)"
+        (cancelled)="onFormCancelled()">
+      </app-disponibilite-form>
+    </div>
+  </div>
+</div> 

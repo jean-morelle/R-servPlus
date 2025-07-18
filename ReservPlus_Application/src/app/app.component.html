@@ -1,0 +1,29 @@
+<div class="app-container">
+  <nav *ngIf="isAuthenticated && !isHomePage" class="navbar">
+    <div class="nav-brand">
+      <h1>RéservPlus</h1>
+    </div>
+    <ul class="nav-menu">
+      <li><a routerLink="/dashboard" routerLinkActive="active">Tableau de bord</a></li>
+      <li><a routerLink="/users" routerLinkActive="active">Utilisateurs</a></li>
+      <li><a routerLink="/prestataires" routerLinkActive="active">Prestataires</a></li>
+      <li><a routerLink="/disponibilites" routerLinkActive="active">Disponibilités</a></li>
+      <li><a routerLink="/reservations" routerLinkActive="active">Réservations</a></li>
+      <li><a routerLink="/paiements" routerLinkActive="active">Paiements</a></li>
+      <li><a routerLink="/reports" routerLinkActive="active">Rapports</a></li>
+      <li><a routerLink="/calendar" routerLinkActive="active">Calendrier</a></li>
+    </ul>
+    <div class="nav-user">
+      <app-notifications></app-notifications>
+      <span class="user-name">{{ currentUser?.prenom }} {{ currentUser?.nom }}</span>
+      <button class="btn btn-outline-light btn-sm" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Déconnexion
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content" [class.no-nav]="!isAuthenticated || isHomePage">
+    <router-outlet></router-outlet>
+  </main>
+</div> 

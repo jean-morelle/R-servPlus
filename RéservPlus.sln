@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RéservPlus", "RéservPlus\RéservPlus.csproj", "{6FA2A7D1-188C-432E-880E-FC470C679C96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RéservPlus.Domain", "RéservPlus.Domain\RéservPlus.Domain.csproj", "{CEAFF418-1DB6-4F37-812D-88D1DA74DEEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RéservPlus.Infrastructure", "RéservPlus.Infrastructure\RéservPlus.Infrastructure.csproj", "{D9C5A7DD-5960-45B3-9311-E9A9D70D2237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RéservPlus.Application", "RéservPlus.Application\RéservPlus.Application.csproj", "{2A281E31-D1B0-456E-B920-F08CE159F8B2}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ReservPlus_Application", "ReservPlus_Application\ReservPlus_Application.esproj", "{9F85D819-E302-FD26-873F-13569F4F74AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6FA2A7D1-188C-432E-880E-FC470C679C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FA2A7D1-188C-432E-880E-FC470C679C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FA2A7D1-188C-432E-880E-FC470C679C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FA2A7D1-188C-432E-880E-FC470C679C96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEAFF418-1DB6-4F37-812D-88D1DA74DEEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEAFF418-1DB6-4F37-812D-88D1DA74DEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEAFF418-1DB6-4F37-812D-88D1DA74DEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEAFF418-1DB6-4F37-812D-88D1DA74DEEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9C5A7DD-5960-45B3-9311-E9A9D70D2237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9C5A7DD-5960-45B3-9311-E9A9D70D2237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9C5A7DD-5960-45B3-9311-E9A9D70D2237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C5A7DD-5960-45B3-9311-E9A9D70D2237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A281E31-D1B0-456E-B920-F08CE159F8B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A281E31-D1B0-456E-B920-F08CE159F8B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A281E31-D1B0-456E-B920-F08CE159F8B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A281E31-D1B0-456E-B920-F08CE159F8B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F85D819-E302-FD26-873F-13569F4F74AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F85D819-E302-FD26-873F-13569F4F74AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F85D819-E302-FD26-873F-13569F4F74AF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9F85D819-E302-FD26-873F-13569F4F74AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F85D819-E302-FD26-873F-13569F4F74AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F85D819-E302-FD26-873F-13569F4F74AF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AB15C00-066E-4EE8-9C87-23B4EAB76B25}
+	EndGlobalSection
+EndGlobal

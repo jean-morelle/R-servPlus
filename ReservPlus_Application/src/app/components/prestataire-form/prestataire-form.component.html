@@ -1,0 +1,334 @@
+<div class="form-container">
+  <div class="form-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-user-tie"></i>
+      </div>
+      <div class="header-text">
+        <h2>{{ mode === 'edit' ? 'Modifier le prestataire' : 'Ajouter un prestataire' }}</h2>
+        <p>{{ mode === 'edit' ? 'Modifiez les informations du prestataire' : 'Créez un nouveau prestataire de services' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="prestataire-form">
+    <!-- Section Informations personnelles -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-user"></i>
+        </div>
+        <h3>Informations personnelles</h3>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-user"></i>
+            Nom *
+          </label>
+          <div class="input-wrapper">
+            <input 
+              formControlName="nom" 
+              type="text" 
+              class="form-input" 
+              placeholder="Entrez le nom"
+              [class.invalid]="form.get('nom')?.invalid && form.get('nom')?.touched">
+            <div class="input-icon">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('nom')?.invalid && form.get('nom')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Nom requis
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-user"></i>
+            Prénom *
+          </label>
+          <div class="input-wrapper">
+            <input 
+              formControlName="prenom" 
+              type="text" 
+              class="form-input" 
+              placeholder="Entrez le prénom"
+              [class.invalid]="form.get('prenom')?.invalid && form.get('prenom')?.touched">
+            <div class="input-icon">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('prenom')?.invalid && form.get('prenom')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Prénom requis
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Contact -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <h3>Informations de contact</h3>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-envelope"></i>
+            Email *
+          </label>
+          <div class="input-wrapper">
+            <input 
+              formControlName="email" 
+              type="email" 
+              class="form-input" 
+              placeholder="exemple@email.com"
+              [class.invalid]="form.get('email')?.invalid && form.get('email')?.touched">
+            <div class="input-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Email valide requis
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-phone"></i>
+            Téléphone *
+          </label>
+          <div class="input-wrapper">
+            <input 
+              formControlName="telephone" 
+              type="tel" 
+              class="form-input" 
+              placeholder="06 12 34 56 78"
+              [class.invalid]="form.get('telephone')?.invalid && form.get('telephone')?.touched">
+            <div class="input-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('telephone')?.invalid && form.get('telephone')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Téléphone requis
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Adresse -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <h3>Adresse</h3>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label class="form-label">
+            <i class="fas fa-map-marker-alt"></i>
+            Adresse *
+          </label>
+          <div class="input-wrapper">
+            <input 
+              formControlName="adresse" 
+              type="text" 
+              class="form-input" 
+              placeholder="123 Rue de la Paix"
+              [class.invalid]="form.get('adresse')?.invalid && form.get('adresse')?.touched">
+            <div class="input-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('adresse')?.invalid && form.get('adresse')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Adresse requise
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-city"></i>
+            Ville *
+          </label>
+          <div class="input-wrapper">
+            <input 
+              formControlName="ville" 
+              type="text" 
+              class="form-input" 
+              placeholder="Paris"
+              [class.invalid]="form.get('ville')?.invalid && form.get('ville')?.touched">
+            <div class="input-icon">
+              <i class="fas fa-city"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('ville')?.invalid && form.get('ville')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Ville requise
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-mail-bulk"></i>
+            Code postal *
+          </label>
+          <div class="input-wrapper">
+            <input 
+              formControlName="codePostal" 
+              type="text" 
+              class="form-input" 
+              placeholder="75001"
+              [class.invalid]="form.get('codePostal')?.invalid && form.get('codePostal')?.touched">
+            <div class="input-icon">
+              <i class="fas fa-mail-bulk"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('codePostal')?.invalid && form.get('codePostal')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Code postal requis
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Services -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-tools"></i>
+        </div>
+        <h3>Services et tarification</h3>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-tools"></i>
+            Spécialité *
+          </label>
+          <div class="input-wrapper">
+            <select 
+              formControlName="specialite" 
+              class="form-input" 
+              [class.invalid]="form.get('specialite')?.invalid && form.get('specialite')?.touched">
+              <option value="">Sélectionner une spécialité</option>
+              <option *ngFor="let s of specialites" [value]="s">{{ s }}</option>
+            </select>
+            <div class="input-icon">
+              <i class="fas fa-tools"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('specialite')?.invalid && form.get('specialite')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Spécialité requise
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-euro-sign"></i>
+            Tarif horaire (€) *
+          </label>
+          <div class="input-wrapper">
+            <input 
+              formControlName="tarifHoraire" 
+              type="number" 
+              min="0" 
+              step="0.01"
+              class="form-input" 
+              placeholder="25.00"
+              [class.invalid]="form.get('tarifHoraire')?.invalid && form.get('tarifHoraire')?.touched">
+            <div class="input-icon">
+              <i class="fas fa-euro-sign"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="form.get('tarifHoraire')?.invalid && form.get('tarifHoraire')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Tarif requis (>= 0)
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label class="form-label">
+          <i class="fas fa-align-left"></i>
+          Description *
+        </label>
+        <div class="input-wrapper">
+          <textarea 
+            formControlName="description" 
+            rows="4" 
+            class="form-input" 
+            placeholder="Décrivez les services proposés, l'expérience, les qualifications..."
+            [class.invalid]="form.get('description')?.invalid && form.get('description')?.touched"></textarea>
+          <div class="input-icon textarea-icon">
+            <i class="fas fa-align-left"></i>
+          </div>
+        </div>
+        <div class="error-message" *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
+          <i class="fas fa-exclamation-circle"></i>
+          Description requise
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Statut -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-toggle-on"></i>
+        </div>
+        <h3>Statut</h3>
+      </div>
+      
+      <div class="form-group">
+        <div class="checkbox-wrapper">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              formControlName="estActif"
+              class="checkbox-input">
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-text">
+              <i class="fas fa-check-circle"></i>
+              Prestataire actif
+            </span>
+          </label>
+          <p class="checkbox-description">Un prestataire actif peut recevoir des réservations</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions du formulaire -->
+    <div class="form-actions">
+      <div class="actions-wrapper">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="onCancel()">
+          <i class="fas fa-times"></i>
+          Annuler
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="form.invalid || loading">
+          <i class="fas fa-spinner fa-spin" *ngIf="loading"></i>
+          <i class="fas fa-save" *ngIf="!loading"></i>
+          {{ mode === 'edit' ? 'Enregistrer' : 'Ajouter le prestataire' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div> 

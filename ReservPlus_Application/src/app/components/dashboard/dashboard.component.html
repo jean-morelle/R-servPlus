@@ -1,0 +1,257 @@
+<div class="dashboard-container">
+  <!-- Header avec gradient -->
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <div class="welcome-badge">
+        <i class="fas fa-sun"></i>
+        <span>{{ getTimeOfDay() }}</span>
+      </div>
+      <h1>{{ getWelcomeMessage() }}</h1>
+      <p class="subtitle">Votre tableau de bord RéservPlus</p>
+    </div>
+    
+    <div class="header-actions">
+      <div class="date-display">
+        <i class="fas fa-calendar-day"></i>
+        <span>{{ getCurrentDate() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading avec animation moderne -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring"></div>
+    </div>
+    <p>Chargement de vos données...</p>
+  </div>
+
+  <div *ngIf="!loading" class="dashboard-content">
+    <!-- Statistiques principales avec design moderne -->
+    <div class="stats-section">
+      <div class="section-header">
+        <h2><i class="fas fa-chart-line"></i> Vue d'ensemble</h2>
+        <p>Statistiques de votre plateforme</p>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-card users-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.totalUsers }}</h3>
+              <p>Utilisateurs</p>
+              <div class="stat-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+12% ce mois</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card prestataires-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.totalPrestataires }}</h3>
+              <p>Prestataires</p>
+              <div class="stat-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+8% ce mois</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card reservations-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.totalReservations }}</h3>
+              <p>Réservations</p>
+              <div class="stat-details">
+                <span class="confirmed">{{ stats.reservationsConfirmees }} confirmées</span>
+                <span class="pending">{{ stats.reservationsEnAttente }} en attente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card disponibilites-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.totalDisponibilites }}</h3>
+              <p>Disponibilités</p>
+              <div class="stat-details">
+                <span class="available">{{ stats.disponibilitesDisponibles }} disponibles</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card paiements-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.totalPaiements }}</h3>
+              <p>Paiements</p>
+              <div class="stat-details">
+                <span class="validated">{{ stats.paiementsValides }} validés</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions rapides avec design moderne -->
+    <div class="quick-actions-section">
+      <div class="section-header">
+        <h2><i class="fas fa-bolt"></i> Actions rapides</h2>
+        <p>Accédez rapidement aux fonctionnalités principales</p>
+      </div>
+      
+      <div class="quick-actions-grid">
+        <div 
+          *ngFor="let action of quickActions" 
+          class="quick-action-card"
+          [routerLink]="action.route">
+          <div class="action-background"></div>
+          <div class="action-content">
+            <div class="action-icon" [style.background]="action.color">
+              <i [class]="action.icon"></i>
+            </div>
+            <h4>{{ action.title }}</h4>
+            <p>Accéder rapidement à cette fonctionnalité</p>
+            <div class="action-arrow">
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphiques et analyses avec design moderne -->
+    <div class="analytics-section">
+      <div class="section-header">
+        <h2><i class="fas fa-chart-pie"></i> Analyses détaillées</h2>
+        <p>Vue d'ensemble des performances</p>
+      </div>
+      
+      <div class="analytics-grid">
+        <div class="analytics-card reservations-analytics">
+          <div class="analytics-header">
+            <h3><i class="fas fa-calendar-check"></i> Réservations par statut</h3>
+            <div class="analytics-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+          </div>
+          
+          <div class="analytics-content">
+            <div class="progress-item">
+              <div class="progress-info">
+                <span class="progress-label">Confirmées</span>
+                <span class="progress-value">{{ stats.reservationsConfirmees }}</span>
+              </div>
+              <div class="progress-bar">
+                <div 
+                  class="progress-fill confirmed-fill" 
+                  [style.width.%]="getPercentage(stats.reservationsConfirmees, stats.totalReservations)">
+                </div>
+              </div>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-info">
+                <span class="progress-label">En attente</span>
+                <span class="progress-value">{{ stats.reservationsEnAttente }}</span>
+              </div>
+              <div class="progress-bar">
+                <div 
+                  class="progress-fill pending-fill" 
+                  [style.width.%]="getPercentage(stats.reservationsEnAttente, stats.totalReservations)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-card disponibilites-analytics">
+          <div class="analytics-header">
+            <h3><i class="fas fa-calendar-alt"></i> Disponibilités</h3>
+            <div class="analytics-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+          </div>
+          
+          <div class="analytics-content">
+            <div class="progress-item">
+              <div class="progress-info">
+                <span class="progress-label">Disponibles</span>
+                <span class="progress-value">{{ stats.disponibilitesDisponibles }}</span>
+              </div>
+              <div class="progress-bar">
+                <div 
+                  class="progress-fill available-fill" 
+                  [style.width.%]="getPercentage(stats.disponibilitesDisponibles, stats.totalDisponibilites)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-card paiements-analytics">
+          <div class="analytics-header">
+            <h3><i class="fas fa-credit-card"></i> Paiements</h3>
+            <div class="analytics-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+          </div>
+          
+          <div class="analytics-content">
+            <div class="progress-item">
+              <div class="progress-info">
+                <span class="progress-label">Validés</span>
+                <span class="progress-value">{{ stats.paiementsValides }}</span>
+              </div>
+              <div class="progress-bar">
+                <div 
+                  class="progress-fill validated-fill" 
+                  [style.width.%]="getPercentage(stats.paiementsValides, stats.totalPaiements)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

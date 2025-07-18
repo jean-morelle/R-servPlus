@@ -1,0 +1,94 @@
+### Variables d'environnement
+@baseUrl = https://localhost:7001
+@contentType = application/json
+
+### 1. Créer un nouvel utilisateur
+POST {{baseUrl}}/api/users
+Content-Type: {{contentType}}
+
+{
+  "nom": "Dupont",
+  "prenom": "Jean",
+  "email": "jean.dupont@email.com",
+  "motDePasse": "MotDePasse123!"
+}
+
+### 2. Créer un autre utilisateur
+POST {{baseUrl}}/api/users
+Content-Type: {{contentType}}
+
+{
+  "nom": "Martin",
+  "prenom": "Marie",
+  "email": "marie.martin@email.com",
+  "motDePasse": "MotDePasse456!"
+}
+
+### 3. Récupérer tous les utilisateurs
+GET {{baseUrl}}/api/users
+
+### 4. Récupérer un utilisateur par ID (remplacer {id} par l'ID réel)
+GET {{baseUrl}}/api/users/{id}
+
+### 5. Récupérer un utilisateur par email
+GET {{baseUrl}}/api/users/email/jean.dupont@email.com
+
+### 6. Rechercher des utilisateurs par nom
+GET {{baseUrl}}/api/users/search?nom=Dupont
+
+### 7. Récupérer les utilisateurs par date d'inscription
+GET {{baseUrl}}/api/users/date/2024-12-07T00:00:00
+
+### 8. Vérifier si un email existe
+GET {{baseUrl}}/api/users/check-email?email=jean.dupont@email.com
+
+### 9. Authentifier un utilisateur
+POST {{baseUrl}}/api/users/authenticate
+Content-Type: {{contentType}}
+
+{
+  "email": "jean.dupont@email.com",
+  "motDePasse": "MotDePasse123!"
+}
+
+### 10. Mettre à jour un utilisateur (remplacer {id} par l'ID réel)
+PUT {{baseUrl}}/api/users/{id}
+Content-Type: {{contentType}}
+
+{
+  "nom": "Dupont",
+  "prenom": "Jean-Pierre",
+  "email": "jean-pierre.dupont@email.com"
+}
+
+### 11. Changer le mot de passe (remplacer {id} par l'ID réel)
+POST {{baseUrl}}/api/users/{id}/change-password
+Content-Type: {{contentType}}
+
+{
+  "currentPassword": "MotDePasse123!",
+  "newPassword": "NouveauMotDePasse456!"
+}
+
+### 12. Supprimer un utilisateur (remplacer {id} par l'ID réel)
+DELETE {{baseUrl}}/api/users/{id}
+
+### 13. Test avec des données invalides
+POST {{baseUrl}}/api/users
+Content-Type: {{contentType}}
+
+{
+  "nom": "",
+  "prenom": "Test",
+  "email": "email-invalide",
+  "motDePasse": "123"
+}
+
+### 14. Test d'authentification avec mauvais mot de passe
+POST {{baseUrl}}/api/users/authenticate
+Content-Type: {{contentType}}
+
+{
+  "email": "jean.dupont@email.com",
+  "motDePasse": "MauvaisMotDePasse"
+} 

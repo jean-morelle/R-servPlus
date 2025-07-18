@@ -1,0 +1,28 @@
+.app-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.app-main {
+  padding: 0;
+  max-width: none;
+  margin: 0;
+}
+
+/* Styles globaux */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Styles pour les icônes FontAwesome */
+.fas {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}

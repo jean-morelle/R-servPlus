@@ -1,0 +1,223 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <h2>Calendrier des Réservations</h2>
+    <div class="header-actions">
+      <button class="btn btn-outline-primary" (click)="toggleFilters()">
+        <i class="fas fa-filter"></i>
+        Filtres
+      </button>
+      <button class="btn btn-outline-secondary" (click)="goToToday()">
+        <i class="fas fa-calendar-day"></i>
+        Aujourd'hui
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div *ngIf="showFilters" class="filters-section">
+    <form [formGroup]="filterForm" class="filters-form">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>Prestataires</label>
+          <div class="checkbox-group">
+            <label *ngFor="let prestataire of prestataires" class="checkbox-item">
+              <input 
+                type="checkbox" 
+                [value]="prestataire.id"
+                formArrayName="prestataireIds">
+              {{ prestataire.nom }} {{ prestataire.prenom }}
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Utilisateurs</label>
+          <div class="checkbox-group">
+            <label *ngFor="let user of users" class="checkbox-item">
+              <input 
+                type="checkbox" 
+                [value]="user.id"
+                formArrayName="userIds">
+              {{ user.nom }} {{ user.prenom }}
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Statuts</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" formControlName="showConfirmed">
+              Confirmées
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" formControlName="showPending">
+              En attente
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" formControlName="showCancelled">
+              Annulées
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" formControlName="showCompleted">
+              Terminées
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement du calendrier...</p>
+  </div>
+
+  <div *ngIf="!loading" class="calendar-content">
+    <!-- Contrôles de navigation -->
+    <div class="calendar-controls">
+      <div class="view-controls">
+        <button 
+          *ngFor="let view of calendarViews" 
+          class="btn btn-sm"
+          [class.btn-primary]="currentView === view.type"
+          [class.btn-outline-primary]="currentView !== view.type"
+          (click)="onViewChange(view.type)">
+          <i [class]="view.icon"></i>
+          {{ view.title }}
+        </button>
+      </div>
+
+      <div class="navigation-controls">
+        <button class="btn btn-outline-secondary btn-sm" (click)="goToPrevious()">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" (click)="goToNext()">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Calendrier -->
+    <div class="calendar-wrapper">
+      <div #calendarEl class="calendar-element"></div>
+      
+      <!-- Interface simple en attendant FullCalendar -->
+      <div class="calendar-placeholder">
+        <div class="placeholder-content">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>Calendrier Interactif</h3>
+          <p>Vue du calendrier avec les réservations</p>
+          <div class="event-list">
+            <h4>Événements ({{ events.length }})</h4>
+            <div *ngFor="let event of events" class="event-item" (click)="onEventClick(event)">
+              <div class="event-color" [style.background-color]="event.backgroundColor"></div>
+              <div class="event-content">
+                <div class="event-title">{{ event.title }}</div>
+                <div class="event-time">{{ formatEventTime(event.start, event.end) }}</div>
+                <div class="event-date">{{ formatEventDate(event.start) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal d'événement -->
+<div *ngIf="showEventModal" class="modal-overlay" (click)="closeEventModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ selectedEvent ? 'Détails de la réservation' : 'Nouvelle réservation' }}</h3>
+      <button class="modal-close" (click)="closeEventModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body" *ngIf="selectedEvent">
+      <div class="event-details">
+        <div class="detail-row">
+          <label>Utilisateur:</label>
+          <span>{{ getUserName(selectedEvent.extendedProps.userId) }}</span>
+        </div>
+        
+        <div class="detail-row">
+          <label>Prestataire:</label>
+          <span>{{ getPrestataireName(selectedEvent.extendedProps.prestataireId) }}</span>
+        </div>
+        
+        <div class="detail-row">
+          <label>Date:</label>
+          <span>{{ formatEventDate(selectedEvent.start) }}</span>
+        </div>
+        
+        <div class="detail-row">
+          <label>Heures:</label>
+          <span>{{ formatEventTime(selectedEvent.start, selectedEvent.end) }}</span>
+        </div>
+        
+        <div class="detail-row">
+          <label>Statut:</label>
+          <span class="status-badge" [style.background-color]="getEventStatusColor(selectedEvent.extendedProps.statut)">
+            {{ selectedEvent.extendedProps.statut }}
+          </span>
+        </div>
+        
+        <div class="detail-row">
+          <label>Montant:</label>
+          <span>{{ selectedEvent.extendedProps.montant | currency:'EUR' }}</span>
+        </div>
+        
+        <div class="detail-row" *ngIf="selectedEvent.extendedProps.commentaire">
+          <label>Commentaire:</label>
+          <span>{{ selectedEvent.extendedProps.commentaire }}</span>
+        </div>
+      </div>
+      
+      <div class="event-actions">
+        <button 
+          *ngIf="isEventEditable(selectedEvent.extendedProps.statut)"
+          class="btn btn-primary"
+          (click)="closeEventModal()">
+          <i class="fas fa-edit"></i>
+          Modifier
+        </button>
+        
+        <button 
+          *ngIf="isEventDeletable(selectedEvent.extendedProps.statut)"
+          class="btn btn-danger"
+          (click)="deleteEvent(selectedEvent)">
+          <i class="fas fa-trash"></i>
+          Supprimer
+        </button>
+        
+        <button class="btn btn-secondary" (click)="closeEventModal()">
+          Fermer
+        </button>
+      </div>
+    </div>
+    
+    <div class="modal-body" *ngIf="selectedDateRange">
+      <div class="new-reservation-form">
+        <h4>Nouvelle réservation</h4>
+        <p>Date sélectionnée: {{ formatEventDate(selectedDateRange.start.toISOString()) }}</p>
+        <p>Heures: {{ formatEventTime(selectedDateRange.start.toISOString(), selectedDateRange.end.toISOString()) }}</p>
+        
+        <div class="form-actions">
+          <button class="btn btn-primary" (click)="closeEventModal()">
+            <i class="fas fa-plus"></i>
+            Créer réservation
+          </button>
+          <button class="btn btn-secondary" (click)="closeEventModal()">
+            Annuler
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

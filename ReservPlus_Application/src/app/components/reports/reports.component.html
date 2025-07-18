@@ -1,0 +1,280 @@
+<div class="reports-container">
+  <div class="reports-header">
+    <h2>Rapports et Statistiques</h2>
+    <div class="header-actions">
+      <button class="btn btn-outline-primary" (click)="exportReport('pdf')">
+        <i class="fas fa-file-pdf"></i>
+        Export PDF
+      </button>
+      <button class="btn btn-outline-success" (click)="exportReport('excel')">
+        <i class="fas fa-file-excel"></i>
+        Export Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-section">
+    <form [formGroup]="filterForm" (ngSubmit)="onFilterChange()" class="filters-form">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label for="periode">Période</label>
+          <select id="periode" formControlName="periode" class="form-control">
+            <option *ngFor="let periode of periodes" [value]="periode.value">
+              {{ periode.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group" *ngIf="filterForm.get('periode')?.value === 'custom'">
+          <label for="dateDebut">Date de début</label>
+          <input type="date" id="dateDebut" formControlName="dateDebut" class="form-control">
+        </div>
+
+        <div class="filter-group" *ngIf="filterForm.get('periode')?.value === 'custom'">
+          <label for="dateFin">Date de fin</label>
+          <input type="date" id="dateFin" formControlName="dateFin" class="form-control">
+        </div>
+
+        <div class="filter-group">
+          <label for="groupBy">Grouper par</label>
+          <select id="groupBy" formControlName="groupBy" class="form-control">
+            <option value="jour">Jour</option>
+            <option value="semaine">Semaine</option>
+            <option value="mois">Mois</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+            Appliquer
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des statistiques...</p>
+  </div>
+
+  <div *ngIf="!loading" class="reports-content">
+    <!-- Onglets -->
+    <div class="tabs-container">
+      <div class="tabs">
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'reservations'"
+          (click)="onTabChange('reservations')">
+          <i class="fas fa-calendar-check"></i>
+          Réservations
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'prestataires'"
+          (click)="onTabChange('prestataires')">
+          <i class="fas fa-user-tie"></i>
+          Prestataires
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'utilisateurs'"
+          (click)="onTabChange('utilisateurs')">
+          <i class="fas fa-users"></i>
+          Utilisateurs
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'paiements'"
+          (click)="onTabChange('paiements')">
+          <i class="fas fa-credit-card"></i>
+          Paiements
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenu des onglets -->
+    <div class="tab-content">
+      <!-- Onglet Réservations -->
+      <div *ngIf="activeTab === 'reservations' && statsReservations" class="tab-pane">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #007bff;">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsReservations.totalReservations) }}</h3>
+              <p>Total réservations</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #28a745;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsReservations.reservationsConfirmees) }}</h3>
+              <p>Confirmées</p>
+              <small>{{ formatPercentage(statsReservations.tauxConfirmation) }}</small>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #dc3545;">
+              <i class="fas fa-times-circle"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsReservations.reservationsAnnulees) }}</h3>
+              <p>Annulées</p>
+              <small>{{ formatPercentage(statsReservations.tauxAnnulation) }}</small>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #17a2b8;">
+              <i class="fas fa-euro-sign"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatCurrency(statsReservations.revenusTotaux) }}</h3>
+              <p>Revenus totaux</p>
+              <small>Moyenne: {{ formatCurrency(statsReservations.revenusMoyens) }}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3>Évolution des réservations</h3>
+          <canvas #chartCanvas width="400" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Onglet Prestataires -->
+      <div *ngIf="activeTab === 'prestataires' && statsPrestataires" class="tab-pane">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #007bff;">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsPrestataires.totalPrestataires) }}</h3>
+              <p>Total prestataires</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #28a745;">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsPrestataires.prestatairesActifs) }}</h3>
+              <p>Actifs</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #ffc107;">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsPrestataires.disponibilitesUtilisees) }}</h3>
+              <p>Disponibilités utilisées</p>
+              <small>{{ formatPercentage(statsPrestataires.tauxUtilisation) }}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3>Performance par prestataire</h3>
+          <canvas #chartCanvas width="400" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Onglet Utilisateurs -->
+      <div *ngIf="activeTab === 'utilisateurs' && statsUtilisateurs" class="tab-pane">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #007bff;">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsUtilisateurs.totalUtilisateurs) }}</h3>
+              <p>Total utilisateurs</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #28a745;">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsUtilisateurs.utilisateursActifs) }}</h3>
+              <p>Actifs</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #17a2b8;">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsUtilisateurs.nouveauxUtilisateurs) }}</h3>
+              <p>Nouveaux</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3>Activité par mois</h3>
+          <canvas #chartCanvas width="400" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Onglet Paiements -->
+      <div *ngIf="activeTab === 'paiements' && statsPaiements" class="tab-pane">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #007bff;">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsPaiements.totalPaiements) }}</h3>
+              <p>Total paiements</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #28a745;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatNumber(statsPaiements.paiementsValides) }}</h3>
+              <p>Validés</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #17a2b8;">
+              <i class="fas fa-euro-sign"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatCurrency(statsPaiements.montantTotal) }}</h3>
+              <p>Montant total</p>
+              <small>Moyenne: {{ formatCurrency(statsPaiements.montantMoyen) }}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3>Répartition par méthode de paiement</h3>
+          <canvas #chartCanvas width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
