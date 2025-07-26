@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { 
   Report, 
   ReportParametres, 
@@ -15,7 +16,7 @@ import {
   providedIn: 'root'
 })
 export class ReportService {
-  private readonly baseUrl = 'https://localhost:7195/api';
+  private readonly baseUrl = 'http://localhost:5266/api';
 
   constructor(private http: HttpClient) {}
 

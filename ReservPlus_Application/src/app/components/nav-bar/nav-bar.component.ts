@@ -14,6 +14,9 @@ export class NavBarComponent {
     { path: '/prestataires', label: 'Prestataires', icon: 'fas fa-users' },
     { path: '/disponibilites', label: 'Disponibilités', icon: 'fas fa-calendar-alt' },
     { path: '/paiements', label: 'Paiements', icon: 'fas fa-credit-card' },
-    { path: '/users', label: 'Utilisateurs', icon: 'fas fa-user-friends' }
+    { path: '/users', label: 'Utilisateurs', icon: 'fas fa-user-friends' },
+    { path: '/about', label: 'À propos', icon: 'fas fa-info-circle' },
+    { path: '/blog', label: 'Blog', icon: 'fas fa-blog' },
+    { path: '/contact', label: 'Contact', icon: 'fas fa-envelope' }
   ];
 } 

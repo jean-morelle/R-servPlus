@@ -25,17 +25,20 @@ export class UserFormComponent implements OnInit {
       nom: [this.user?.nom || '', Validators.required],
       prenom: [this.user?.prenom || '', Validators.required],
       email: [this.user?.email || '', [Validators.required, Validators.email]],
-      telephone: [this.user?.telephone || '', Validators.required],
-      adresse: [this.user?.adresse || '', Validators.required],
-      ville: [this.user?.ville || '', Validators.required],
-      codePostal: [this.user?.codePostal || '', Validators.required],
-      estActif: [this.user?.estActif ?? true]
+      motDePasse: [this.mode === 'create' ? '' : undefined, this.mode === 'create' ? [Validators.required, Validators.minLength(6)] : []]
     });
   }
 
   onSubmit(): void {
     if (this.form.valid) {
-      this.formSubmit.emit(this.form.value);
+      const formValue = this.form.value;
+      
+      // Pour la mise à jour, on ne doit pas envoyer motDePasse s'il est vide
+      if (this.mode === 'edit' && !formValue.motDePasse) {
+        delete formValue.motDePasse;
+      }
+      
+      this.formSubmit.emit(formValue);
     } else {
       this.form.markAllAsTouched();
     }

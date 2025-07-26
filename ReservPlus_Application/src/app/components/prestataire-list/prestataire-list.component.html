@@ -1,152 +1,364 @@
 <div class="prestataire-list-container">
-  <div class="header">
-    <h2>Liste des Prestataires</h2>
-    <div class="header-actions">
-      <button class="btn btn-success" (click)="showAddForm()">
-        <i class="fas fa-plus"></i> Ajouter un prestataire
-      </button>
-      <button class="btn btn-primary" (click)="loadPrestataires()">
-        <i class="fas fa-sync-alt"></i> Actualiser
-      </button>
-    </div>
-  </div>
-
-  <!-- Filtres -->
-  <div class="filters">
-    <div class="search-box">
-      <input 
-        type="text" 
-        [(ngModel)]="searchTerm" 
-        (input)="onSearchChange()"
-        placeholder="Rechercher par nom, spécialité ou ville..."
-        class="form-control"
-      >
+  <!-- Header moderne avec gradient et animations -->
+  <div class="modern-header">
+    <div class="header-content">
+      <div class="header-title">
+        <div class="title-icon">
+          <i class="fas fa-users-cog"></i>
+        </div>
+        <div class="title-text">
+          <h1>Gestion des Prestataires</h1>
+          <p>Découvrez et gérez vos prestataires de services</p>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-card modern">
+          <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-number">{{ activePrestataires }}</span>
+            <span class="stat-label">Actifs</span>
+          </div>
+        </div>
+        <div class="stat-card modern">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-number">{{ totalPrestataires }}</span>
+            <span class="stat-label">Total</span>
+          </div>
+        </div>
+      </div>
     </div>
     
-    <div class="filter-group">
-      <select 
-        [(ngModel)]="selectedSpecialite" 
-        (change)="onSpecialiteChange()"
-        class="form-control"
-      >
-        <option value="">Toutes les spécialités</option>
-        <option *ngFor="let specialite of specialites" [value]="specialite">
-          {{ specialite }}
-        </option>
-      </select>
-    </div>
-
-    <button class="btn btn-secondary" (click)="clearFilters()">
-      Effacer les filtres
-    </button>
-  </div>
-
-  <!-- État de chargement -->
-  <div *ngIf="loading" class="loading">
-    <div class="spinner"></div>
-    <p>Chargement des prestataires...</p>
-  </div>
-
-  <!-- Messages de succès et d'erreur -->
-  <div *ngIf="successMessage" class="success-message">
-    <p>{{ successMessage }}</p>
-  </div>
-  
-  <div *ngIf="errorMessage" class="error-message">
-    <p>{{ errorMessage }}</p>
-  </div>
-
-  <div *ngIf="error" class="error-message">
-    <p>{{ error }}</p>
-  </div>
-
-  <!-- Liste des prestataires -->
-  <div *ngIf="!loading && !error" class="prestataires-grid">
-    <div *ngIf="filteredPrestataires.length === 0" class="no-results">
-      <p>Aucun prestataire trouvé.</p>
-    </div>
-
-    <div 
-      *ngFor="let prestataire of filteredPrestataires" 
-      class="prestataire-card"
-    >
-      <div class="card-header">
-        <h3>{{ prestataire.prenom }} {{ prestataire.nom }}</h3>
-        <span class="status" [ngClass]="getStatusClass(prestataire.estActif)">
-          {{ getStatusText(prestataire.estActif) }}
-        </span>
-      </div>
-
-      <div class="card-body">
-        <div class="info-row">
-          <i class="fas fa-tools"></i>
-          <span class="specialite">{{ prestataire.specialite }}</span>
-        </div>
-
-        <div class="info-row">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>{{ prestataire.ville }}, {{ prestataire.codePostal }}</span>
-        </div>
-
-        <div class="info-row">
-          <i class="fas fa-envelope"></i>
-          <span>{{ prestataire.email }}</span>
-        </div>
-
-        <div class="info-row">
-          <i class="fas fa-phone"></i>
-          <span>{{ prestataire.telephone }}</span>
-        </div>
-
-        <div class="info-row">
-          <i class="fas fa-euro-sign"></i>
-          <span class="price">{{ formatPrice(prestataire.tarifHoraire) }}</span>
-        </div>
-
-        <div class="description">
-          <p>{{ prestataire.description }}</p>
-        </div>
-
-        <div class="info-row">
-          <i class="fas fa-calendar-alt"></i>
-          <span>Inscrit le {{ formatDate(prestataire.dateInscription) }}</span>
-        </div>
-      </div>
-
-      <div class="card-actions">
-        <button class="btn btn-primary btn-sm">
-          <i class="fas fa-eye"></i> Voir détails
-        </button>
-        <button class="btn btn-warning btn-sm" (click)="showEditForm(prestataire)">
-          <i class="fas fa-edit"></i> Modifier
-        </button>
-        <button class="btn btn-success btn-sm">
-          <i class="fas fa-calendar-plus"></i> Réserver
-        </button>
-      </div>
+    <div class="header-actions">
+      <button class="btn-modern btn-refresh" (click)="loadPrestataires()">
+        <i class="fas fa-sync-alt"></i>
+        <span>Actualiser</span>
+      </button>
+      <button class="btn-modern btn-primary" (click)="showAddForm()">
+        <i class="fas fa-plus"></i>
+        <span>Nouveau Prestataire</span>
+      </button>
     </div>
   </div>
 
-  <!-- Statistiques -->
-  <div *ngIf="!loading && !error && filteredPrestataires.length > 0" class="stats">
-    <p>{{ filteredPrestataires.length }} prestataire(s) trouvé(s)</p>
-  </div>
-
-  <!-- Formulaire d'ajout/modification -->
-  <div *ngIf="showForm" class="form-overlay">
-    <div class="form-container">
-      <div class="form-header">
-        <h3>{{ formMode === 'create' ? 'Ajouter un prestataire' : 'Modifier le prestataire' }}</h3>
-        <button class="btn-close" (click)="hideForm()">
+  <!-- Barre de recherche moderne -->
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-box">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="onSearchChange()"
+          placeholder="Rechercher un prestataire..."
+          class="search-input"
+        >
+        <button class="search-clear" *ngIf="searchTerm" (click)="clearSearch()">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <app-prestataire-form
-        [prestataire]="editingPrestataire || undefined"
-        [mode]="formMode"
-        (formSubmit)="onFormSubmit($event)"
-        (cancel)="onFormCancel()"
-      ></app-prestataire-form>
+      
+      <div class="quick-filters">
+        <button 
+          class="filter-chip" 
+          [class.active]="selectedSpecialite === ''"
+          (click)="selectSpecialite('')"
+        >
+          Toutes
+        </button>
+        <button 
+          *ngFor="let specialite of specialites.slice(0, 5)" 
+          class="filter-chip"
+          [class.active]="selectedSpecialite === specialite"
+          (click)="selectSpecialite(specialite)"
+        >
+          {{ specialite }}
+        </button>
+        <button class="filter-chip more" (click)="toggleAdvancedFilters()">
+          <i class="fas fa-filter"></i>
+          Plus
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtres avancés avec animation -->
+  <div class="advanced-filters" [class.expanded]="showAdvancedFilters">
+    <div class="filters-grid">
+      <div class="filter-group">
+        <label>Spécialité</label>
+        <select 
+          [(ngModel)]="selectedSpecialite" 
+          (change)="onSpecialiteChange()"
+          class="modern-select"
+        >
+          <option value="">Toutes les spécialités</option>
+          <option *ngFor="let specialite of specialites" [value]="specialite">
+            {{ specialite }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Statut</label>
+        <select 
+          [(ngModel)]="selectedStatus" 
+          (change)="onStatusChange()"
+          class="modern-select"
+        >
+          <option value="">Tous les statuts</option>
+          <option value="true">Actifs</option>
+          <option value="false">Inactifs</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Tri</label>
+        <select 
+          [(ngModel)]="selectedSort" 
+          (change)="onSortChange()"
+          class="modern-select"
+        >
+          <option value="nom">Nom A-Z</option>
+          <option value="specialite">Spécialité</option>
+          <option value="tarifHoraire">Tarif croissant</option>
+          <option value="dateInscription">Plus récents</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Tarif minimum</label>
+        <input 
+          type="number" 
+          [(ngModel)]="minTarif" 
+          (input)="onTarifChange()"
+          class="modern-input"
+          placeholder="0€"
+        >
+      </div>
+
+      <div class="filter-group">
+        <label>Tarif maximum</label>
+        <input 
+          type="number" 
+          [(ngModel)]="maxTarif" 
+          (input)="onTarifChange()"
+          class="modern-input"
+          placeholder="1000€"
+        >
+      </div>
+
+      <div class="filter-group">
+        <label>Ville</label>
+        <input 
+          type="text" 
+          [(ngModel)]="selectedVille" 
+          (input)="onVilleChange()"
+          class="modern-input"
+          placeholder="Filtrer par ville"
+        >
+      </div>
+    </div>
+
+    <div class="filters-actions">
+      <button class="btn-modern btn-secondary" (click)="clearFilters()">
+        <i class="fas fa-times"></i>
+        <span>Effacer les filtres</span>
+      </button>
+      <span class="results-count">{{ filteredPrestataires.length }} prestataire(s) trouvé(s)</span>
+    </div>
+  </div>
+
+  <!-- État de chargement moderne -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner-ring"></div>
+      <p>Chargement des prestataires...</p>
+    </div>
+  </div>
+
+  <!-- Messages de notification modernes -->
+  <div *ngIf="successMessage" class="notification-modern success">
+    <div class="notification-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <div class="notification-content">
+      <span>{{ successMessage }}</span>
+    </div>
+    <button class="notification-close" (click)="clearSuccessMessage()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div *ngIf="errorMessage" class="notification-modern error">
+    <div class="notification-icon">
+      <i class="fas fa-exclamation-circle"></i>
+    </div>
+    <div class="notification-content">
+      <span>{{ errorMessage }}</span>
+    </div>
+    <button class="notification-close" (click)="clearErrorMessage()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Grille moderne des prestataires -->
+  <div *ngIf="!loading && !error" class="prestataires-container">
+    <div *ngIf="filteredPrestataires.length === 0" class="empty-state-modern">
+      <div class="empty-icon">
+        <i class="fas fa-user-slash"></i>
+      </div>
+      <h3>Aucun prestataire trouvé</h3>
+      <p>Aucun prestataire ne correspond à vos critères de recherche.</p>
+      <button class="btn-modern btn-primary" (click)="clearFilters()">
+        <i class="fas fa-refresh"></i>
+        <span>Effacer les filtres</span>
+      </button>
+    </div>
+
+    <div class="prestataires-grid-modern">
+      <div 
+        *ngFor="let prestataire of filteredPrestataires" 
+        class="prestataire-card-modern"
+        [class.inactive]="!prestataire.estActif"
+        (click)="viewDetails(prestataire)"
+      >
+        <div class="card-header-modern">
+          <div class="prestataire-avatar">
+            <div class="avatar-circle">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="status-badge" [ngClass]="getStatusClass(prestataire.estActif)">
+              <i class="fas fa-circle"></i>
+            </div>
+          </div>
+          
+          <div class="prestataire-info">
+            <h3>{{ prestataire.nom }} {{ prestataire.prenom }}</h3>
+            <span class="specialite-tag">{{ prestataire.specialite }}</span>
+          </div>
+
+          <div class="card-menu">
+            <button class="menu-trigger" (click)="toggleDropdown($event, prestataire.id)">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="menu-dropdown" [class.show]="activeDropdown === prestataire.id">
+              <button class="menu-item" (click)="viewDetails(prestataire)">
+                <i class="fas fa-eye"></i> Voir détails
+              </button>
+              <button class="menu-item" (click)="showEditForm(prestataire)">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <button class="menu-item" (click)="toggleStatus(prestataire)">
+                <i class="fas" [ngClass]="prestataire.estActif ? 'fa-pause' : 'fa-play'"></i>
+                {{ prestataire.estActif ? 'Désactiver' : 'Activer' }}
+              </button>
+              <button class="menu-item danger" (click)="deletePrestataire(prestataire)">
+                <i class="fas fa-trash"></i> Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body-modern">
+          <div class="info-grid-modern">
+            <div class="info-item-modern">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>{{ prestataire.ville }}, {{ prestataire.codePostal }}</span>
+            </div>
+
+            <div class="info-item-modern">
+              <i class="fas fa-envelope"></i>
+              <span>{{ prestataire.email }}</span>
+            </div>
+
+            <div class="info-item-modern">
+              <i class="fas fa-phone"></i>
+              <span>{{ prestataire.telephone }}</span>
+            </div>
+
+            <div class="info-item-modern price">
+              <i class="fas fa-euro-sign"></i>
+              <span class="price-value">{{ formatPrice(prestataire.tarifHoraire) }}/h</span>
+            </div>
+          </div>
+
+          <div class="description-modern">
+            <p>{{ prestataire.description | slice:0:120 }}{{ prestataire.description.length > 120 ? '...' : '' }}</p>
+          </div>
+
+          <div class="card-footer-modern">
+            <div class="meta-info">
+              <span class="inscription-date">
+                <i class="fas fa-calendar-alt"></i>
+                Inscrit le {{ formatDate(prestataire.dateInscription) }}
+              </span>
+            </div>
+            
+            <div class="quick-actions">
+              <button class="btn-modern btn-outline" (click)="viewDetails(prestataire)">
+                <i class="fas fa-eye"></i>
+                <span>Détails</span>
+              </button>
+              <button class="btn-modern btn-primary" (click)="createReservation(prestataire)">
+                <i class="fas fa-calendar-plus"></i>
+                <span>Réserver</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination moderne -->
+  <div *ngIf="!loading && filteredPrestataires.length > 0" class="pagination-modern">
+    <div class="pagination-info">
+      <span>Affichage de {{ startIndex + 1 }} à {{ endIndex }} sur {{ totalItems }} prestataires</span>
+    </div>
+    <div class="pagination-controls">
+      <button class="btn-modern btn-outline" [disabled]="currentPage === 1" (click)="previousPage()">
+        <i class="fas fa-chevron-left"></i>
+        <span>Précédent</span>
+      </button>
+      <div class="page-numbers">
+        <button 
+          *ngFor="let page of visiblePages" 
+          class="page-btn" 
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </div>
+      <button class="btn-modern btn-outline" [disabled]="currentPage === totalPages" (click)="nextPage()">
+        <span>Suivant</span>
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal moderne pour le formulaire -->
+  <div *ngIf="showForm" class="modal-overlay-modern" (click)="hideForm()">
+    <div class="modal-container-modern" (click)="$event.stopPropagation()">
+      <div class="modal-header-modern">
+        <h3>{{ formMode === 'create' ? 'Ajouter un prestataire' : 'Modifier le prestataire' }}</h3>
+        <button class="modal-close" (click)="hideForm()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body-modern">
+        <app-prestataire-form
+          [prestataire]="editingPrestataire || undefined"
+          [mode]="formMode"
+          (formSubmit)="onFormSubmit($event)"
+          (cancel)="onFormCancel()"
+        ></app-prestataire-form>
+      </div>
     </div>
   </div>
 </div> 

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 import { UserInfo } from './models/auth.model';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { NotificationsComponent } from './components/notifications/notifications
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavBarComponent, NotificationsComponent]
+  imports: [CommonModule, RouterOutlet, FormsModule, NotificationsComponent]
 })
 export class AppComponent implements OnInit {
   isAuthenticated = false;

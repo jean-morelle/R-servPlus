@@ -17,35 +17,13 @@
       <input formControlName="email" type="email" class="form-control" [class.invalid]="form.get('email')?.invalid && form.get('email')?.touched">
       <div class="error" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">Email valide requis</div>
     </div>
-    <div class="form-group">
-      <label>Téléphone *</label>
-      <input formControlName="telephone" type="text" class="form-control" [class.invalid]="form.get('telephone')?.invalid && form.get('telephone')?.touched">
-      <div class="error" *ngIf="form.get('telephone')?.invalid && form.get('telephone')?.touched">Téléphone requis</div>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group">
-      <label>Adresse *</label>
-      <input formControlName="adresse" type="text" class="form-control" [class.invalid]="form.get('adresse')?.invalid && form.get('adresse')?.touched">
-      <div class="error" *ngIf="form.get('adresse')?.invalid && form.get('adresse')?.touched">Adresse requise</div>
-    </div>
-    <div class="form-group">
-      <label>Ville *</label>
-      <input formControlName="ville" type="text" class="form-control" [class.invalid]="form.get('ville')?.invalid && form.get('ville')?.touched">
-      <div class="error" *ngIf="form.get('ville')?.invalid && form.get('ville')?.touched">Ville requise</div>
-    </div>
-    <div class="form-group">
-      <label>Code postal *</label>
-      <input formControlName="codePostal" type="text" class="form-control" [class.invalid]="form.get('codePostal')?.invalid && form.get('codePostal')?.touched">
-      <div class="error" *ngIf="form.get('codePostal')?.invalid && form.get('codePostal')?.touched">Code postal requis</div>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group">
-      <label>
-        <input type="checkbox" formControlName="estActif">
-        Actif
-      </label>
+    <div class="form-group" *ngIf="mode === 'create'">
+      <label>Mot de passe *</label>
+      <input formControlName="motDePasse" type="password" class="form-control" [class.invalid]="form.get('motDePasse')?.invalid && form.get('motDePasse')?.touched">
+      <div class="error" *ngIf="form.get('motDePasse')?.invalid && form.get('motDePasse')?.touched">
+        <span *ngIf="form.get('motDePasse')?.errors?.['required']">Mot de passe requis</span>
+        <span *ngIf="form.get('motDePasse')?.errors?.['minlength']">Le mot de passe doit contenir au moins 6 caractères</span>
+      </div>
     </div>
   </div>
   <div class="form-actions">

@@ -1,0 +1,215 @@
+<div class="contact-container">
+  <!-- Hero Section -->
+  <section class="contact-hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Contactez-nous</h1>
+        <p>Notre équipe est là pour vous aider. N'hésitez pas à nous contacter pour toute question ou assistance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Information -->
+  <section class="contact-info-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-6" *ngFor="let info of contactInfo">
+          <div class="info-card">
+            <div class="info-icon" [style.background-color]="info.color">
+              <i [class]="info.icon"></i>
+            </div>
+            <h3>{{ info.title }}</h3>
+            <div [innerHTML]="info.content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form and Map -->
+  <section class="contact-form-section">
+    <div class="container">
+      <div class="row">
+        <!-- Contact Form -->
+        <div class="col-lg-8">
+          <div class="contact-form-container">
+            <h2>Envoyez-nous un message</h2>
+            <p>Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+            
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="nom">Nom complet *</label>
+                    <input 
+                      type="text" 
+                      id="nom"
+                      formControlName="nom" 
+                      class="form-control"
+                      [class.is-invalid]="submitted && contactForm.get('nom')?.invalid"
+                    >
+                    <div class="invalid-feedback" *ngIf="submitted && contactForm.get('nom')?.invalid">
+                      {{ getErrorMessage('nom') }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input 
+                      type="email" 
+                      id="email"
+                      formControlName="email" 
+                      class="form-control"
+                      [class.is-invalid]="submitted && contactForm.get('email')?.invalid"
+                    >
+                    <div class="invalid-feedback" *ngIf="submitted && contactForm.get('email')?.invalid">
+                      {{ getErrorMessage('email') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="telephone">Téléphone</label>
+                    <input 
+                      type="tel" 
+                      id="telephone"
+                      formControlName="telephone" 
+                      class="form-control"
+                    >
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="typeDemande">Type de demande *</label>
+                    <select 
+                      id="typeDemande"
+                      formControlName="typeDemande" 
+                      class="form-select"
+                    >
+                      <option value="general">Demande générale</option>
+                      <option value="support">Support technique</option>
+                      <option value="commercial">Question commerciale</option>
+                      <option value="partnership">Partenariat</option>
+                      <option value="other">Autre</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="sujet">Sujet *</label>
+                <input 
+                  type="text" 
+                  id="sujet"
+                  formControlName="sujet" 
+                  class="form-control"
+                  [class.is-invalid]="submitted && contactForm.get('sujet')?.invalid"
+                >
+                <div class="invalid-feedback" *ngIf="submitted && contactForm.get('sujet')?.invalid">
+                  {{ getErrorMessage('sujet') }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message *</label>
+                <textarea 
+                  id="message"
+                  formControlName="message" 
+                  rows="6" 
+                  class="form-control"
+                  [class.is-invalid]="submitted && contactForm.get('message')?.invalid"
+                  placeholder="Décrivez votre demande en détail..."
+                ></textarea>
+                <div class="invalid-feedback" *ngIf="submitted && contactForm.get('message')?.invalid">
+                  {{ getErrorMessage('message') }}
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button 
+                  type="submit" 
+                  class="btn btn-primary btn-lg"
+                  [disabled]="loading"
+                >
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                  {{ loading ? 'Envoi en cours...' : 'Envoyer le message' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="col-lg-4">
+          <div class="map-container">
+            <h3>Notre localisation</h3>
+            <div class="map-placeholder">
+              <i class="fas fa-map-marked-alt fa-3x text-muted mb-3"></i>
+              <p>123 Rue de la Réservation<br>75001 Paris, France</p>
+              <button class="btn btn-outline-primary">Voir sur Google Maps</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="container">
+      <h2 class="text-center mb-5">Questions fréquemment posées</h2>
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item" *ngFor="let item of faqItems; let i = index">
+              <h2 class="accordion-header" [id]="'heading' + i">
+                <button 
+                  class="accordion-button" 
+                  [class.collapsed]="i !== 0"
+                  type="button" 
+                  data-bs-toggle="collapse" 
+                  [attr.data-bs-target]="'#collapse' + i"
+                  [attr.aria-expanded]="i === 0 ? 'true' : 'false'"
+                  [attr.aria-controls]="'collapse' + i"
+                >
+                  {{ item.question }}
+                </button>
+              </h2>
+              <div 
+                [id]="'collapse' + i" 
+                class="accordion-collapse collapse" 
+                [class.show]="i === 0"
+                [attr.aria-labelledby]="'heading' + i" 
+                data-bs-parent="#faqAccordion"
+              >
+                <div class="accordion-body">
+                  {{ item.answer }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container text-center">
+      <h2>Besoin d'aide immédiate ?</h2>
+      <p>Notre équipe support est disponible 24h/24 pour vous assister</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary btn-lg me-3">
+          <i class="fas fa-phone me-2"></i>Appeler maintenant
+        </button>
+        <button class="btn btn-outline-primary btn-lg">
+          <i class="fas fa-comments me-2"></i>Chat en ligne
+        </button>
+      </div>
+    </div>
+  </section>
+</div> 

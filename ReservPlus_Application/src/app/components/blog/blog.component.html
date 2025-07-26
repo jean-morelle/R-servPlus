@@ -1,0 +1,139 @@
+<div class="blog-container">
+  <!-- Hero Section -->
+  <section class="blog-hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Blog RéservPlus</h1>
+        <p>Découvrez nos conseils, actualités et bonnes pratiques pour optimiser votre gestion de réservations</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search and Filter Section -->
+  <section class="search-filter-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="search-box">
+            <input 
+              type="text" 
+              placeholder="Rechercher un article..." 
+              [(ngModel)]="searchTerm"
+              class="form-control"
+            >
+            <button class="btn btn-outline-secondary" (click)="clearSearch()" *ngIf="searchTerm">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="category-filter">
+            <select class="form-select" [(ngModel)]="selectedCategory">
+              <option *ngFor="let category of categories" [value]="category">
+                {{ category }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Posts -->
+  <section class="featured-posts" *ngIf="featuredPosts.length > 0">
+    <div class="container">
+      <h2>Articles à la une</h2>
+      <div class="row">
+        <div class="col-lg-8" *ngFor="let post of featuredPosts">
+          <article class="featured-post">
+            <div class="post-image">
+              <img [src]="post.image" [alt]="post.title" class="img-fluid">
+              <div class="post-category">{{ post.category }}</div>
+            </div>
+            <div class="post-content">
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.excerpt }}</p>
+              <div class="post-meta">
+                <span class="author">
+                  <i class="fas fa-user"></i> {{ post.author }}
+                </span>
+                <span class="date">
+                  <i class="fas fa-calendar"></i> {{ formatDate(post.date) }}
+                </span>
+                <span class="read-time">
+                  <i class="fas fa-clock"></i> {{ post.readTime }}
+                </span>
+              </div>
+              <button class="btn btn-primary">Lire l'article</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- All Posts -->
+  <section class="all-posts">
+    <div class="container">
+      <h2>Tous les articles</h2>
+      <div class="row">
+        <div class="col-lg-4 col-md-6" *ngFor="let post of filteredPosts">
+          <article class="blog-card">
+            <div class="card-image">
+              <img [src]="post.image" [alt]="post.title" class="img-fluid">
+              <div class="card-category">{{ post.category }}</div>
+            </div>
+            <div class="card-content">
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.excerpt }}</p>
+              <div class="card-meta">
+                <div class="meta-row">
+                  <span class="author">
+                    <i class="fas fa-user"></i> {{ post.author }}
+                  </span>
+                  <span class="read-time">
+                    <i class="fas fa-clock"></i> {{ post.readTime }}
+                  </span>
+                </div>
+                <div class="date">{{ formatDate(post.date) }}</div>
+              </div>
+              <button class="btn btn-outline-primary">Lire plus</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- No Results Message -->
+      <div class="no-results" *ngIf="filteredPosts.length === 0">
+        <div class="text-center">
+          <i class="fas fa-search fa-3x text-muted mb-3"></i>
+          <h3>Aucun article trouvé</h3>
+          <p>Essayez de modifier vos critères de recherche ou de sélectionner une autre catégorie.</p>
+          <button class="btn btn-primary" (click)="clearSearch(); selectedCategory = 'Tous'">
+            Voir tous les articles
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-content">
+        <h2>Restez informé</h2>
+        <p>Recevez nos derniers articles et conseils directement dans votre boîte mail</p>
+        <div class="newsletter-form">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="input-group">
+                <input type="email" class="form-control" placeholder="Votre adresse email">
+                <button class="btn btn-primary">S'abonner</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div> 

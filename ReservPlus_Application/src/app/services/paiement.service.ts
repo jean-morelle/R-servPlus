@@ -7,7 +7,7 @@ import { Paiement, CreatePaiementDto, UpdatePaiementDto, MethodePaiement, Statut
   providedIn: 'root'
 })
 export class PaiementService {
-  private readonly baseUrl = 'https://localhost:7195/api/paiements';
+  private readonly baseUrl = 'http://localhost:5266/api/paiements';
 
   constructor(private http: HttpClient) { }
 

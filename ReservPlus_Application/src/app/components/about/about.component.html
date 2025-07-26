@@ -1,0 +1,108 @@
+<div class="about-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>À propos de RéservPlus</h1>
+      <p class="hero-subtitle">Votre plateforme de réservation de services de confiance</p>
+      <p class="hero-description">
+        RéservPlus est né de la volonté de simplifier et moderniser la gestion des réservations de services. 
+        Notre mission est de connecter efficacement les utilisateurs avec des prestataires de qualité, 
+        tout en offrant une expérience fluide et intuitive.
+      </p>
+    </div>
+  </section>
+
+  <!-- Notre Histoire -->
+  <section class="story-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Notre Histoire</h2>
+          <p>
+            Fondée en 2024, RéservPlus est le fruit d'une vision simple : créer une plateforme 
+            qui révolutionne la façon dont les gens réservent des services. Notre équipe, 
+            composée d'experts en technologie et en gestion de services, a développé une solution 
+            complète qui répond aux besoins modernes des utilisateurs et des prestataires.
+          </p>
+          <p>
+            Depuis nos débuts, nous avons aidé des centaines d'utilisateurs à trouver les services 
+            dont ils ont besoin, et des dizaines de prestataires à développer leur activité. 
+            Notre engagement envers l'innovation et la satisfaction client nous pousse à 
+            améliorer constamment notre plateforme.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <div class="story-image">
+            <img src="assets/images/about/story.jpg" alt="Notre histoire" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistiques -->
+  <section class="stats-section">
+    <div class="container">
+      <h2 class="text-center mb-5">Nos Chiffres Clés</h2>
+      <div class="row">
+        <div class="col-md-3 col-sm-6" *ngFor="let stat of stats">
+          <div class="stat-card">
+            <div class="stat-number">{{ stat.number }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nos Valeurs -->
+  <section class="values-section">
+    <div class="container">
+      <h2 class="text-center mb-5">Nos Valeurs</h2>
+      <div class="row">
+        <div class="col-md-6 col-lg-3" *ngFor="let value of values">
+          <div class="value-card">
+            <div class="value-icon">
+              <i [class]="value.icon"></i>
+            </div>
+            <h3>{{ value.title }}</h3>
+            <p>{{ value.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notre Équipe -->
+  <section class="team-section">
+    <div class="container">
+      <h2 class="text-center mb-5">Notre Équipe</h2>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let member of teamMembers">
+          <div class="team-card">
+            <div class="member-image">
+              <img [src]="member.image" [alt]="member.name" class="img-fluid">
+            </div>
+            <div class="member-info">
+              <h3>{{ member.name }}</h3>
+              <p class="member-role">{{ member.role }}</p>
+              <p class="member-description">{{ member.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="contact-cta">
+    <div class="container text-center">
+      <h2>Prêt à commencer ?</h2>
+      <p>Rejoignez notre communauté et découvrez la différence RéservPlus</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary btn-lg me-3">Créer un compte</button>
+        <button class="btn btn-outline-primary btn-lg">Nous contacter</button>
+      </div>
+    </div>
+  </section>
+</div> 

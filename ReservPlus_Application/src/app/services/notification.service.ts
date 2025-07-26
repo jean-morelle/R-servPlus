@@ -7,7 +7,7 @@ import { Notification, CreateNotificationRequest, UpdateNotificationRequest } fr
   providedIn: 'root'
 })
 export class NotificationService {
-  private readonly baseUrl = 'https://localhost:7195/api';
+  private readonly baseUrl = 'http://localhost:5266/api';
   private notificationsSubject = new BehaviorSubject<Notification[]>([]);
   private unreadCountSubject = new BehaviorSubject<number>(0);
 

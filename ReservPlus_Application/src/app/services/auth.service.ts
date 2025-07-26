@@ -7,7 +7,7 @@ import { LoginRequest, LoginResponse, RegisterRequest, UserInfo, AuthState } fro
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly baseUrl = 'https://localhost:7195/api';
+  private readonly baseUrl = 'http://localhost:5266/api';
   private authStateSubject = new BehaviorSubject<AuthState>({
     isAuthenticated: false,
     user: null,

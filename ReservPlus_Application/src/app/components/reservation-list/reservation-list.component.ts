@@ -41,7 +41,7 @@ export class ReservationListComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
     
-    this.reservationService.getReservations().subscribe({
+    this.reservationService.getAllReservations().subscribe({
       next: (reservations) => {
         this.reservations = reservations;
         this.loading = false;

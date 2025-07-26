@@ -1,0 +1,234 @@
+<div class="dashboard-modern">
+  <!-- Header du tableau de bord -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="header-title">
+        <div class="title-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="title-text">
+          <h1>Tableau de bord Prestataire</h1>
+          <p>Vue d'ensemble de vos performances et activités</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-modern btn-refresh" (click)="refreshData()">
+          <i class="fas fa-sync-alt"></i>
+          <span>Actualiser</span>
+        </button>
+        <button class="btn-modern btn-primary" (click)="exportData()">
+          <i class="fas fa-download"></i>
+          <span>Exporter</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistiques principales -->
+  <div class="stats-grid">
+    <div class="stat-card-modern revenue">
+      <div class="stat-icon">
+        <i class="fas fa-euro-sign"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ formatPrice(totalRevenue) }}</div>
+        <div class="stat-label">Revenus totaux</div>
+        <div class="stat-change" [class.positive]="revenueChange >= 0" [class.negative]="revenueChange < 0">
+          <i class="fas" [ngClass]="revenueChange >= 0 ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+          {{ Math.abs(revenueChange) }}% ce mois
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card-modern reservations">
+      <div class="stat-icon">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ totalReservations }}</div>
+        <div class="stat-label">Réservations</div>
+        <div class="stat-change" [class.positive]="reservationChange >= 0" [class.negative]="reservationChange < 0">
+          <i class="fas" [ngClass]="reservationChange >= 0 ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+          {{ Math.abs(reservationChange) }}% ce mois
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card-modern rating">
+      <div class="stat-icon">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ averageRating.toFixed(1) }}</div>
+        <div class="stat-label">Note moyenne</div>
+        <div class="rating-stars">
+          <i *ngFor="let star of getStars(averageRating)" 
+             class="fas fa-star" 
+             [class.filled]="star === 'filled'"
+             [class.half]="star === 'half'"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card-modern active">
+      <div class="stat-icon">
+        <i class="fas fa-clock"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ activeReservations }}</div>
+        <div class="stat-label">Réservations actives</div>
+        <div class="stat-subtitle">{{ completedReservations }} terminées</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphiques et analyses -->
+  <div class="charts-section">
+    <div class="chart-container revenue-chart">
+      <div class="chart-header">
+        <h3>Évolution des revenus</h3>
+        <div class="chart-controls">
+          <button class="time-filter" [class.active]="selectedPeriod === 'week'" (click)="setPeriod('week')">
+            Semaine
+          </button>
+          <button class="time-filter" [class.active]="selectedPeriod === 'month'" (click)="setPeriod('month')">
+            Mois
+          </button>
+          <button class="time-filter" [class.active]="selectedPeriod === 'year'" (click)="setPeriod('year')">
+            Année
+          </button>
+        </div>
+      </div>
+      <div class="chart-content">
+        <canvas #revenueChart></canvas>
+      </div>
+    </div>
+
+    <div class="chart-container reservations-chart">
+      <div class="chart-header">
+        <h3>Réservations par spécialité</h3>
+        <div class="chart-legend">
+          <span class="legend-item">
+            <span class="legend-color" style="background: #6366f1;"></span>
+            Réservations
+          </span>
+        </div>
+      </div>
+      <div class="chart-content">
+        <canvas #reservationsChart></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activité récente -->
+  <div class="recent-activity">
+    <div class="section-header">
+      <h3>Activité récente</h3>
+      <button class="btn-modern btn-outline" (click)="viewAllActivity()">
+        <i class="fas fa-external-link-alt"></i>
+        <span>Voir tout</span>
+      </button>
+    </div>
+    
+    <div class="activity-list">
+      <div *ngFor="let activity of recentActivities" class="activity-item">
+        <div class="activity-icon" [ngClass]="activity.type">
+          <i [class]="getActivityIcon(activity.type)"></i>
+        </div>
+        <div class="activity-content">
+          <div class="activity-title">{{ activity.title }}</div>
+          <div class="activity-description">{{ activity.description }}</div>
+          <div class="activity-time">{{ formatTime(activity.timestamp) }}</div>
+        </div>
+        <div class="activity-amount" *ngIf="activity.amount">
+          {{ formatPrice(activity.amount) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performances par période -->
+  <div class="performance-section">
+    <div class="section-header">
+      <h3>Performances</h3>
+      <div class="performance-filters">
+        <select class="modern-select" [(ngModel)]="selectedPerformancePeriod">
+          <option value="week">Cette semaine</option>
+          <option value="month">Ce mois</option>
+          <option value="quarter">Ce trimestre</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="performance-grid">
+      <div class="performance-card">
+        <div class="performance-header">
+          <h4>Taux de satisfaction</h4>
+          <div class="performance-value">{{ satisfactionRate }}%</div>
+        </div>
+        <div class="performance-bar">
+          <div class="bar-fill" [style.width.%]="satisfactionRate"></div>
+        </div>
+      </div>
+
+      <div class="performance-card">
+        <div class="performance-header">
+          <h4>Temps de réponse moyen</h4>
+          <div class="performance-value">{{ averageResponseTime }}h</div>
+        </div>
+        <div class="performance-bar">
+          <div class="bar-fill" [style.width.%]="getResponseTimePercentage()"></div>
+        </div>
+      </div>
+
+      <div class="performance-card">
+        <div class="performance-header">
+          <h4>Taux de réservation</h4>
+          <div class="performance-value">{{ bookingRate }}%</div>
+        </div>
+        <div class="performance-bar">
+          <div class="bar-fill" [style.width.%]="bookingRate"></div>
+        </div>
+      </div>
+
+      <div class="performance-card">
+        <div class="performance-header">
+          <h4>Clients fidèles</h4>
+          <div class="performance-value">{{ loyalCustomers }}</div>
+        </div>
+        <div class="performance-bar">
+          <div class="bar-fill" [style.width.%]="getLoyalCustomersPercentage()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Objectifs et récompenses -->
+  <div class="goals-section">
+    <div class="section-header">
+      <h3>Objectifs et récompenses</h3>
+    </div>
+    
+    <div class="goals-grid">
+      <div *ngFor="let goal of goals" class="goal-card" [class.completed]="goal.completed">
+        <div class="goal-icon">
+          <i [class]="goal.icon"></i>
+        </div>
+        <div class="goal-content">
+          <h4>{{ goal.title }}</h4>
+          <p>{{ goal.description }}</p>
+          <div class="goal-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="goal.progress"></div>
+            </div>
+            <span class="progress-text">{{ goal.progress }}%</span>
+          </div>
+        </div>
+        <div class="goal-reward" *ngIf="goal.reward">
+          <i class="fas fa-trophy"></i>
+          <span>{{ goal.reward }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

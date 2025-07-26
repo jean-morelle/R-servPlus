@@ -3,11 +3,6 @@ export interface User {
   nom: string;
   prenom: string;
   email: string;
-  telephone?: string;
-  adresse?: string;
-  ville?: string;
-  codePostal?: string;
-  estActif?: boolean;
   dateInscription: string;
   reservations?: Reservation[];
 }
@@ -16,22 +11,13 @@ export interface CreateUserDto {
   nom: string;
   prenom: string;
   email: string;
-  telephone?: string;
-  adresse?: string;
-  ville?: string;
-  codePostal?: string;
-  estActif?: boolean;
+  motDePasse: string;
 }
 
 export interface UpdateUserDto {
   nom?: string;
   prenom?: string;
   email?: string;
-  telephone?: string;
-  adresse?: string;
-  ville?: string;
-  codePostal?: string;
-  estActif?: boolean;
 }
 
 export interface Reservation {

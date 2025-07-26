@@ -146,7 +146,8 @@ builder.Services.AddCors(options =>
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowCredentials()
+            .SetIsOriginAllowed(origin => true); // Temporaire pour le développement
         });
 });
 
@@ -162,10 +163,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
-
-// Configuration CORS
+// Configuration CORS - DOIT être en premier
 app.UseCors("AllowAngular");
+
+app.UseHttpsRedirection();
 
 // Configuration du routage
 app.UseRouting();

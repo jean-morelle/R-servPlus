@@ -1,0 +1,117 @@
+<div class="prestataire-details" *ngIf="prestataire">
+  <div class="header">
+    <h1>{{ prestataire.prenom }} {{ prestataire.nom }}</h1>
+    <div class="rating-section">
+      <div class="stars">
+        <i class="fas fa-star" *ngFor="let star of getStars(rating)"></i>
+        <i class="far fa-star" *ngFor="let star of getEmptyStars(rating)"></i>
+      </div>
+      <span class="rating-text">{{ rating }}/5 ({{ reviewCount }} avis)</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="info-section">
+      <h2>Informations</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Email:</label>
+          <span>{{ prestataire.email }}</span>
+        </div>
+        <div class="info-item">
+          <label>Téléphone:</label>
+          <span>{{ prestataire.telephone }}</span>
+        </div>
+        <div class="info-item">
+          <label>Adresse:</label>
+          <span>{{ prestataire.adresse }}, {{ prestataire.ville }} {{ prestataire.codePostal }}</span>
+        </div>
+        <div class="info-item">
+          <label>Spécialité:</label>
+          <span>{{ prestataire.specialite }}</span>
+        </div>
+        <div class="info-item">
+          <label>Tarif horaire:</label>
+          <span>{{ formatPrice(prestataire.tarifHoraire) }}/h</span>
+        </div>
+      </div>
+      
+      <div class="description">
+        <h3>Description</h3>
+        <p>{{ prestataire.description }}</p>
+      </div>
+    </div>
+
+    <div class="stats-section">
+      <h2>Statistiques</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Réservations totales</div>
+          <div class="stat-number">{{ stats.totalReservations || 0 }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Heures travaillées</div>
+          <div class="stat-number">{{ stats.heuresTotal || 0 }}h</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Revenus totaux</div>
+          <div class="stat-number">{{ formatPrice(stats.revenusTotal || 0) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-section">
+      <h2>Avis clients</h2>
+      <div class="reviews-list">
+        <div class="review-item" *ngFor="let review of reviews">
+          <div class="review-header">
+            <div class="reviewer-avatar">
+              {{ review.clientName.charAt(0) }}
+            </div>
+            <div class="reviewer-info">
+              <div class="reviewer-name">{{ review.clientName }}</div>
+              <div class="review-date">{{ formatDate(review.date) }}</div>
+            </div>
+            <div class="review-rating">
+              <i class="fas fa-star" *ngFor="let star of getStars(review.rating)"></i>
+              <i class="far fa-star" *ngFor="let star of getEmptyStars(review.rating)"></i>
+            </div>
+          </div>
+          <div class="review-comment">
+            {{ review.comment }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="action-btn" (click)="createReservation()">
+      <i class="fas fa-calendar-plus"></i>
+      Réserver
+    </button>
+    <button class="action-btn" (click)="sendMessage()">
+      <i class="fas fa-envelope"></i>
+      Message
+    </button>
+    <button class="action-btn" (click)="viewSchedule()">
+      <i class="fas fa-clock"></i>
+      Planning
+    </button>
+    <button class="action-btn" (click)="exportData()">
+      <i class="fas fa-download"></i>
+      Exporter
+    </button>
+  </div>
+</div>
+
+<div class="loading" *ngIf="loading">
+  <p>Chargement...</p>
+</div>
+
+<div class="error" *ngIf="error">
+  <p>{{ error }}</p>
+  <button class="btn btn-outline" (click)="loadPrestataire()">
+    Réessayer
+  </button>
+</div> 

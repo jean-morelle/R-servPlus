@@ -7,7 +7,7 @@ import { User, CreateUserDto, UpdateUserDto } from '../models/user.model';
   providedIn: 'root'
 })
 export class UserService {
-  private readonly baseUrl = 'https://localhost:7195/api';
+  private readonly baseUrl = 'http://localhost:5266/api';
 
   constructor(private http: HttpClient) { }
 

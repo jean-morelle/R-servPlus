@@ -11,6 +11,10 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RegisterComponent } from './components/register/register.component';
+import { AboutComponent } from './components/about/about.component';
+import { BlogComponent } from './components/blog/blog.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { FeaturesComponent } from './components/features/features.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -56,5 +60,10 @@ export const routes: Routes = [
     path: 'calendar', 
     component: CalendarComponent, 
     canActivate: [AuthGuard] 
-  }
+  },
+  { path: 'about', component: AboutComponent },
+  { path: 'blog', component: BlogComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'features', component: FeaturesComponent },
+  { path: 'feature', redirectTo: '/features', pathMatch: 'full' }
 ];

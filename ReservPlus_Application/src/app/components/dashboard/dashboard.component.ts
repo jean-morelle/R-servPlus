@@ -168,7 +168,7 @@ export class DashboardComponent implements OnInit {
 
   private loadReservationsStats(): Promise<void> {
     return new Promise((resolve) => {
-      this.reservationService.getReservations().subscribe({
+      this.reservationService.getAllReservations().subscribe({
         next: (reservations) => {
           this.stats.totalReservations = reservations.length;
           this.stats.reservationsConfirmees = reservations.filter(r => r.statut === ReservationStatut.Confirmee).length;

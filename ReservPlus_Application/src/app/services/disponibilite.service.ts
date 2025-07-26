@@ -7,7 +7,7 @@ import { Disponibilite, CreateDisponibiliteDto, UpdateDisponibiliteDto } from '.
   providedIn: 'root'
 })
 export class DisponibiliteService {
-  private readonly baseUrl = 'https://localhost:7195/api/disponibilites';
+  private readonly baseUrl = 'http://localhost:5266/api/disponibilites';
 
   constructor(private http: HttpClient) { }
 

@@ -18,7 +18,7 @@ import { PrestataireService } from './prestataire.service';
   providedIn: 'root'
 })
 export class CalendarService {
-  private readonly baseUrl = 'https://localhost:7195/api';
+  private readonly baseUrl = 'http://localhost:5266/api';
   private eventsSubject = new BehaviorSubject<CalendarEvent[]>([]);
   private filterSubject = new BehaviorSubject<CalendarFilter>({
     prestataireIds: [],
@@ -42,7 +42,7 @@ export class CalendarService {
 
   // Charger les événements du calendrier
   loadCalendarEvents(filter?: CalendarFilter): Observable<CalendarEvent[]> {
-    return this.reservationService.getReservations().pipe(
+    return this.reservationService.getAllReservations().pipe(
       map(reservations => this.convertReservationsToEvents(reservations, filter))
     );
   }

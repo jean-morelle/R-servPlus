@@ -47,7 +47,7 @@ namespace RéservPlus.Infrastructure.Migrations
 
                     b.HasIndex("ServiceId", "Date", "HeureDebut");
 
-                    b.ToTable("Disponibilites");
+                    b.ToTable("Disponibilites", (string)null);
                 });
 
             modelBuilder.Entity("RéservPlus.Domain.Models.Paiement", b =>
@@ -78,7 +78,7 @@ namespace RéservPlus.Infrastructure.Migrations
                     b.HasIndex("ReservationId")
                         .IsUnique();
 
-                    b.ToTable("Paiements");
+                    b.ToTable("Paiements", (string)null);
                 });
 
             modelBuilder.Entity("RéservPlus.Domain.Models.Prestataire", b =>
@@ -112,7 +112,7 @@ namespace RéservPlus.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Prestataires");
+                    b.ToTable("Prestataires", (string)null);
                 });
 
             modelBuilder.Entity("RéservPlus.Domain.Models.Reservation", b =>
@@ -160,7 +160,7 @@ namespace RéservPlus.Infrastructure.Migrations
 
                     b.HasIndex("UserId", "DateReservation");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("RéservPlus.Domain.Models.Service", b =>
@@ -194,7 +194,7 @@ namespace RéservPlus.Infrastructure.Migrations
 
                     b.HasIndex("PrestataireId", "Nom");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("RéservPlus.Domain.Models.User", b =>
@@ -233,7 +233,7 @@ namespace RéservPlus.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("RéservPlus.Domain.Models.Disponibilite", b =>
