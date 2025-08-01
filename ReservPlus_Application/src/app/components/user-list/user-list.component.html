@@ -38,8 +38,8 @@
       <div *ngFor="let user of users" class="user-card">
         <div class="card-header">
           <h3>{{ user.prenom }} {{ user.nom }}</h3>
-          <span class="status" [ngClass]="user.estActif ? 'status-active' : 'status-inactive'">
-            {{ user.estActif ? 'Actif' : 'Inactif' }}
+          <span class="status" [ngClass]="(user.estActif ?? true) ? 'status-active' : 'status-inactive'">
+            {{ (user.estActif ?? true) ? 'Actif' : 'Inactif' }}
           </span>
         </div>
         <div class="card-body">
@@ -47,13 +47,13 @@
             <i class="fas fa-envelope"></i>
             <span>{{ user.email }}</span>
           </div>
-          <div class="info-row">
+          <div class="info-row" *ngIf="user.telephone">
             <i class="fas fa-phone"></i>
             <span>{{ user.telephone }}</span>
           </div>
-          <div class="info-row">
+          <div class="info-row" *ngIf="user.ville || user.codePostal">
             <i class="fas fa-map-marker-alt"></i>
-            <span>{{ user.ville }}, {{ user.codePostal }}</span>
+            <span>{{ user.ville }}{{ user.ville && user.codePostal ? ', ' : '' }}{{ user.codePostal }}</span>
           </div>
           <div class="info-row">
             <i class="fas fa-calendar-alt"></i>

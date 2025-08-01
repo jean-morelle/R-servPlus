@@ -115,7 +115,8 @@ namespace RéservPlus.Controllers
                 Email = User.FindFirst(ClaimTypes.Email)?.Value,
                 Name = User.FindFirst(ClaimTypes.Name)?.Value,
                 FirstName = User.FindFirst(ClaimTypes.GivenName)?.Value,
-                LastName = User.FindFirst(ClaimTypes.Surname)?.Value
+                LastName = User.FindFirst(ClaimTypes.Surname)?.Value,
+                Role = User.FindFirst(ClaimTypes.Role)?.Value ?? "User"
             };
 
             return Ok(claims);
@@ -211,6 +212,7 @@ namespace RéservPlus.Controllers
                     Email = u.Email,
                     Nom = u.Nom,
                     Prenom = u.Prenom,
+                    Role = u.Role,
                     MotDePasseLength = u.MotDePasse?.Length ?? 0,
                     MotDePasseStart = u.MotDePasse?.Substring(0, Math.Min(10, u.MotDePasse.Length)) ?? "null",
                     IsBCrypt = u.MotDePasse?.StartsWith("$2a$") == true || u.MotDePasse?.StartsWith("$2b$") == true,
@@ -226,6 +228,62 @@ namespace RéservPlus.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { Success = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPost("create-admin")]
+        public async Task<IActionResult> CreateAdmin()
+        {
+            try
+            {
+                var adminEmail = "admin@reservplus.com";
+                var existingAdmin = await _userRepository.GetByEmailAsync(adminEmail);
+                
+                if (existingAdmin != null)
+                {
+                    return Ok(new { 
+                        Success = true, 
+                        Message = "L'utilisateur admin existe déjà",
+                        User = new
+                        {
+                            Id = existingAdmin.Id,
+                            Email = existingAdmin.Email,
+                            Nom = existingAdmin.Nom,
+                            Prenom = existingAdmin.Prenom,
+                            Role = existingAdmin.Role
+                        }
+                    });
+                }
+
+                var adminUser = new Domain.Models.User
+                {
+                    Email = adminEmail,
+                    Nom = "Administrateur",
+                    Prenom = "Système",
+                    MotDePasse = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
+                    Role = "Admin",
+                    EstActif = true,
+                    DateInscription = DateTime.UtcNow
+                };
+
+                var createdUser = await _userRepository.AddAsync(adminUser);
+
+                return Ok(new { 
+                    Success = true, 
+                    Message = "Utilisateur admin créé avec succès",
+                    User = new
+                    {
+                        Id = createdUser.Id,
+                        Email = createdUser.Email,
+                        Nom = createdUser.Nom,
+                        Prenom = createdUser.Prenom,
+                        Role = createdUser.Role
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Success = false, Message = ex.Message, StackTrace = ex.StackTrace });
             }
         }
 

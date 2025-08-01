@@ -32,4 +32,13 @@ export interface AuthState {
   token: string | null;
   loading: boolean;
   error: string | null;
-} 
+}
+
+// Constantes pour les rôles
+export const ROLES = {
+  ADMIN: 'Admin',
+  USER: 'User',
+  PRESTATAIRE: 'Prestataire'
+} as const;
+
+export type UserRole = typeof ROLES[keyof typeof ROLES]; 

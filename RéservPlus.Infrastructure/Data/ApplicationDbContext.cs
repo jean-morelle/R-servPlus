@@ -57,7 +57,7 @@ namespace RéservPlus.Infrastructure.Data
                 .HasOne(p => p.Reservation)
                 .WithOne(r => r.Paiement)
                 .HasForeignKey<Paiement>(p => p.ReservationId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configuration des index
             modelBuilder.Entity<User>()
@@ -127,7 +127,7 @@ namespace RéservPlus.Infrastructure.Data
                 .HasOne(n => n.User)
                 .WithMany()
                 .HasForeignKey(n => n.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.Reservation)

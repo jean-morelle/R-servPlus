@@ -5,6 +5,7 @@
     </div>
     <ul class="nav-menu">
       <li><a routerLink="/dashboard" routerLinkActive="active">Tableau de bord</a></li>
+      <li *ngIf="currentUser?.role === 'Admin'"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
       <li><a routerLink="/users" routerLinkActive="active">Utilisateurs</a></li>
       <li><a routerLink="/prestataires" routerLinkActive="active">Prestataires</a></li>
       <li><a routerLink="/disponibilites" routerLinkActive="active">Disponibilités</a></li>
@@ -16,6 +17,7 @@
     <div class="nav-user">
       <app-notifications></app-notifications>
       <span class="user-name">{{ currentUser?.prenom }} {{ currentUser?.nom }}</span>
+      <span *ngIf="currentUser?.role === 'Admin'" class="user-role">Admin</span>
       <button class="btn btn-outline-light btn-sm" (click)="logout()">
         <i class="fas fa-sign-out-alt"></i>
         Déconnexion

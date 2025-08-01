@@ -26,6 +26,39 @@
       </div>
     </div>
   </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Téléphone</label>
+      <input formControlName="telephone" type="tel" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Ville</label>
+      <input formControlName="ville" type="text" class="form-control">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Code postal</label>
+      <input formControlName="codePostal" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Statut</label>
+      <div class="checkbox-group">
+        <input formControlName="estActif" type="checkbox" id="estActif">
+        <label for="estActif">Utilisateur actif</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Rôle *</label>
+      <select formControlName="role" class="form-control">
+        <option value="User">Utilisateur</option>
+        <option value="Prestataire">Prestataire</option>
+        <option value="Admin">Administrateur</option>
+      </select>
+    </div>
+  </div>
   <div class="form-actions">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">{{ mode === 'edit' ? 'Enregistrer' : 'Ajouter' }}</button>
     <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>

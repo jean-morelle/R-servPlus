@@ -9,6 +9,11 @@ namespace RéservPlus.Application.DTOs
         public string Prenom { get; set; } = default!;
         public string Email { get; set; } = default!;
         public DateTime DateInscription { get; set; }
+        public string? Telephone { get; set; }
+        public string? Ville { get; set; }
+        public string? CodePostal { get; set; }
+        public bool EstActif { get; set; }
+        public string Role { get; set; } = "User";
         public ICollection<ReservationDto> Reservations { get; set; } = new List<ReservationDto>();
     }
 
@@ -30,6 +35,20 @@ namespace RéservPlus.Application.DTOs
         [Required]
         [StringLength(255)]
         public string MotDePasse { get; set; } = default!;
+        
+        [StringLength(20)]
+        public string? Telephone { get; set; }
+        
+        [StringLength(100)]
+        public string? Ville { get; set; }
+        
+        [StringLength(10)]
+        public string? CodePostal { get; set; }
+        
+        public bool EstActif { get; set; } = true;
+        
+        [StringLength(20)]
+        public string Role { get; set; } = "User";
     }
 
     public class UpdateUserDto
@@ -43,5 +62,19 @@ namespace RéservPlus.Application.DTOs
         [EmailAddress]
         [StringLength(255)]
         public string? Email { get; set; }
+        
+        [StringLength(20)]
+        public string? Telephone { get; set; }
+        
+        [StringLength(100)]
+        public string? Ville { get; set; }
+        
+        [StringLength(10)]
+        public string? CodePostal { get; set; }
+        
+        public bool? EstActif { get; set; }
+        
+        [StringLength(20)]
+        public string? Role { get; set; }
     }
 } 

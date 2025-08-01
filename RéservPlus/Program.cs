@@ -10,6 +10,7 @@ using RéservPlus.Application.Services;
 using RéservPlus.Application.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 using RéservPlus.Application.Interfaces;
+using RéservPlus.Application.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +57,20 @@ builder.Services.AddAuthentication(options =>
         options.AppSecret = builder.Configuration["OAuth:Facebook:AppSecret"] ?? "";
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    // Politique pour les administrateurs
+    options.AddPolicy("RequireAdmin", policy =>
+        policy.RequireRole("Admin"));
+    
+    // Politique pour les prestataires
+    options.AddPolicy("RequirePrestataire", policy =>
+        policy.RequireRole("Admin", "Prestataire"));
+    
+    // Politique pour les utilisateurs authentifiés
+    options.AddPolicy("RequireUser", policy =>
+        policy.RequireRole("Admin", "User", "Prestataire"));
+});
 
 // Ajouter Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -199,6 +213,64 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi()
 .WithTags("Test");
+
+// Initialisation de la base de données et création de l'admin par défaut
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+    
+    try
+    {
+        Console.WriteLine("🔧 Initialisation de la base de données...");
+        
+        // Créer la base de données si elle n'existe pas
+        context.Database.EnsureCreated();
+        Console.WriteLine("✅ Base de données créée/connectée avec succès.");
+        
+        // Créer un utilisateur administrateur par défaut s'il n'existe pas
+        var adminEmail = "admin@reservplus.com";
+        var existingAdmin = await userService.GetByEmailAsync(adminEmail);
+        
+        if (existingAdmin == null)
+        {
+            Console.WriteLine("👤 Création de l'utilisateur administrateur...");
+            var adminUser = new CreateUserDto
+            {
+                Nom = "Administrateur",
+                Prenom = "Système",
+                Email = adminEmail,
+                MotDePasse = "Admin123!",
+                Role = "Admin",
+                EstActif = true
+            };
+            
+            await userService.CreateAsync(adminUser);
+            Console.WriteLine("✅ Utilisateur administrateur créé avec succès!");
+            Console.WriteLine($"📧 Email: {adminEmail}");
+            Console.WriteLine("🔑 Mot de passe: Admin123!");
+        }
+        else
+        {
+            Console.WriteLine("✅ L'utilisateur administrateur existe déjà.");
+            Console.WriteLine($"📧 Email: {existingAdmin.Email}");
+            Console.WriteLine($"👤 Nom: {existingAdmin.Prenom} {existingAdmin.Nom}");
+            Console.WriteLine($"🔐 Rôle: {existingAdmin.Role}");
+        }
+        
+        Console.WriteLine("🚀 Application prête à recevoir des requêtes!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Erreur lors de l'initialisation: {ex.Message}");
+        Console.WriteLine($"📋 Type d'erreur: {ex.GetType().Name}");
+        
+        if (ex.InnerException != null)
+        {
+            Console.WriteLine($"🔍 Erreur interne: {ex.InnerException.Message}");
+        }
+    }
+}
 
 app.Run();
 

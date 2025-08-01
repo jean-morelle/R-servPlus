@@ -21,7 +21,7 @@ export class PrestataireService {
       email: 'jean.dupont@email.com',
       telephone: '0123456789',
       adresse: '123 Rue de la Paix',
-      ville: 'Paris',
+              ville: 'Lomé',
       codePostal: '75001',
       specialite: 'Plomberie',
       description: 'Plombier expérimenté avec 10 ans d\'expérience. Spécialisé dans la réparation et l\'installation de systèmes de plomberie.',

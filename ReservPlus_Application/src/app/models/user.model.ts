@@ -4,6 +4,11 @@ export interface User {
   prenom: string;
   email: string;
   dateInscription: string;
+  telephone?: string;
+  ville?: string;
+  codePostal?: string;
+  estActif?: boolean;
+  role: string;
   reservations?: Reservation[];
 }
 

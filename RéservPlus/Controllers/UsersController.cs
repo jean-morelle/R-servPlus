@@ -7,6 +7,7 @@ namespace RéservPlus.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Policy = "RequireUser")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -70,6 +71,7 @@ namespace RéservPlus.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<ActionResult<UserDto>> Create(CreateUserDto createDto)
         {
             if (!ModelState.IsValid)
@@ -87,6 +89,7 @@ namespace RéservPlus.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<ActionResult<UserDto>> Update(Guid id, UpdateUserDto updateDto)
         {
             if (!ModelState.IsValid)
@@ -108,6 +111,7 @@ namespace RéservPlus.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var deleted = await _userService.DeleteAsync(id);

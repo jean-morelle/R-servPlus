@@ -1,0 +1,187 @@
+<div class="admin-dashboard-container">
+  <!-- Header avec gradient admin -->
+  <div class="admin-header">
+    <div class="header-content">
+      <div class="welcome-section">
+        <div class="admin-badge">
+          <i class="fas fa-shield-alt"></i>
+          <span>Administrateur</span>
+        </div>
+        <h1>{{ getWelcomeMessage() }}</h1>
+        <p class="subtitle">Tableau de bord d'administration RéservPlus</p>
+      </div>
+      
+      <div class="header-actions">
+        <div class="date-display">
+          <i class="fas fa-calendar-day"></i>
+          <span>{{ getCurrentDate() }}</span>
+        </div>
+        <button class="btn-refresh" (click)="loadAdminDashboardData()">
+          <i class="fas fa-sync-alt"></i>
+          Actualiser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading avec animation moderne -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring"></div>
+    </div>
+    <p>Chargement des données d'administration...</p>
+  </div>
+
+  <div *ngIf="!loading" class="admin-content">
+    <!-- Alertes système -->
+    <div *ngIf="systemAlerts.length > 0" class="alerts-section">
+      <div class="section-header">
+        <h2><i class="fas fa-exclamation-triangle"></i> Alertes système</h2>
+      </div>
+      <div class="alerts-grid">
+        <div *ngFor="let alert of systemAlerts" class="alert-card" [ngClass]="getAlertClass(alert.type)">
+          <div class="alert-icon">
+            <i [class]="alert.icon"></i>
+          </div>
+          <div class="alert-content">
+            <p>{{ alert.message }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistiques principales -->
+    <div class="stats-section">
+      <div class="section-header">
+        <h2><i class="fas fa-chart-line"></i> Vue d'ensemble</h2>
+        <p>Statistiques complètes de la plateforme</p>
+      </div>
+      
+      <div class="stats-grid">
+        <!-- Utilisateurs -->
+        <div class="stat-card users-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.totalUsers }}</h3>
+              <p>Utilisateurs totaux</p>
+              <div class="stat-details">
+                <span class="new-users">+{{ stats.nouveauxUtilisateurs }} ce mois</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prestataires -->
+        <div class="stat-card prestataires-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.totalPrestataires }}</h3>
+              <p>Prestataires</p>
+              <div class="stat-details">
+                <span class="active-prestataires">{{ stats.nouveauxPrestataires }} actifs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Réservations -->
+        <div class="stat-card reservations-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.totalReservations }}</h3>
+              <p>Réservations</p>
+              <div class="stat-details">
+                <span class="confirmed">{{ stats.reservationsConfirmees }} confirmées</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenus -->
+        <div class="stat-card revenue-card">
+          <div class="stat-background">
+            <div class="stat-pattern"></div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-euro-sign"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ formatCurrency(stats.revenusTotaux) }}</h3>
+              <p>Revenus totaux</p>
+              <div class="stat-details">
+                <span class="valid-payments">{{ stats.paiementsValides }} paiements validés</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions rapides admin -->
+    <div class="quick-actions-section">
+      <div class="section-header">
+        <h2><i class="fas fa-bolt"></i> Actions rapides</h2>
+        <p>Accès direct aux fonctions d'administration</p>
+      </div>
+      
+      <div class="quick-actions-grid">
+        <div *ngFor="let action of quickActions" class="action-card" 
+             [style.--action-color]="action.color"
+             routerLink="{{ action.route }}">
+          <div class="action-icon">
+            <i [class]="action.icon"></i>
+          </div>
+          <div class="action-content">
+            <h3>{{ action.title }}</h3>
+            <p>{{ action.description }}</p>
+          </div>
+          <div class="action-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activités récentes -->
+    <div class="activities-section">
+      <div class="section-header">
+        <h2><i class="fas fa-history"></i> Activités récentes</h2>
+        <p>Dernières actions sur la plateforme</p>
+      </div>
+      
+      <div class="activities-list">
+        <div *ngFor="let activity of recentActivities" class="activity-item">
+          <div class="activity-icon" [ngClass]="'activity-' + activity.type">
+            <i [class]="getActivityIcon(activity.type)"></i>
+          </div>
+          <div class="activity-content">
+            <h4>{{ activity.action }}</h4>
+            <p>{{ activity.details }}</p>
+            <span class="activity-time">{{ activity.time | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

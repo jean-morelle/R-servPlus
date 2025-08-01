@@ -29,6 +29,21 @@ namespace RéservPlus.Domain.Models
         [Required]
         public DateTime DateInscription { get; set; } = DateTime.UtcNow;
         
+        [StringLength(20)]
+        public string? Telephone { get; set; }
+        
+        [StringLength(100)]
+        public string? Ville { get; set; }
+        
+        [StringLength(10)]
+        public string? CodePostal { get; set; }
+        
+        public bool EstActif { get; set; } = true;
+        
+        [Required]
+        [StringLength(20)]
+        public string Role { get; set; } = "User"; // Admin, User, Prestataire
+        
         // Navigation properties
         public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
     }

@@ -271,7 +271,8 @@ namespace RéservPlus.Application.Services
                 new(ClaimTypes.Email, user.Email),
                 new(ClaimTypes.Name, $"{user.Prenom} {user.Nom}"),
                 new(ClaimTypes.GivenName, user.Prenom),
-                new(ClaimTypes.Surname, user.Nom)
+                new(ClaimTypes.Surname, user.Nom),
+                new(ClaimTypes.Role, user.Role ?? "User") // Ajouter le rôle
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor

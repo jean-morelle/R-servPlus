@@ -25,7 +25,12 @@ export class UserFormComponent implements OnInit {
       nom: [this.user?.nom || '', Validators.required],
       prenom: [this.user?.prenom || '', Validators.required],
       email: [this.user?.email || '', [Validators.required, Validators.email]],
-      motDePasse: [this.mode === 'create' ? '' : undefined, this.mode === 'create' ? [Validators.required, Validators.minLength(6)] : []]
+      motDePasse: [this.mode === 'create' ? '' : undefined, this.mode === 'create' ? [Validators.required, Validators.minLength(6)] : []],
+      telephone: [this.user?.telephone || ''],
+      ville: [this.user?.ville || ''],
+      codePostal: [this.user?.codePostal || ''],
+      estActif: [this.user?.estActif ?? true],
+      role: [this.user?.role || 'User']
     });
   }
 
